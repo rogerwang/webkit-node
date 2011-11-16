@@ -5983,7 +5983,7 @@ endif # END USE_V8
 
 
 if USE_V8
-webcore_sources += \
+v8binding_sources = \
 	Source/WebCore/bindings/v8/DOMData.cpp \
 	Source/WebCore/bindings/v8/DOMData.h \
 	Source/WebCore/bindings/v8/DOMDataStore.cpp \

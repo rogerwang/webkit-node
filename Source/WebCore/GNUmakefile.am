@@ -817,7 +817,7 @@ DerivedSources/WebCore/V8%.h: %.idl $(SCRIPTS_BINDINGS) $(WebCore)/bindings/scri
 endif # END USE_V8
 
 noinst_LTLIBRARIES += \
-	libWebCore.la
+	libWebCore.la libV8Binding.la
 
 nodist_EXTRA_libWebCore_la_SOURCES = \
 	$(webcore_built_nosources)
@@ -837,6 +837,38 @@ libWebCore_la_CFLAGS = \
 	$(global_cflags)
 
 libWebCore_la_CPPFLAGS = \
+	-DBUILDING_WEBKIT \
+	$(global_cppflags) \
+	$(webcore_cppflags) \
+	$(webcoregtk_cppflags) \
+	$(javascriptcore_cppflags) \
+	-fno-strict-aliasing \
+	$(CAIRO_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
+	$(ENCHANT_CFLAGS) \
+	$(GEOCLUE_CFLAGS) \
+	$(GLIB_CFLAGS) \
+	$(GSTREAMER_CFLAGS) \
+	$(LIBSOUP_CFLAGS) \
+	$(LIBXML_CFLAGS) \
+	$(LIBXSLT_CFLAGS) \
+	$(SQLITE3_CFLAGS) \
+	$(UNICODE_CFLAGS) \
+	$(XRENDER_CFLAGS) \
+	$(XT_CFLAGS)
+
+libV8Binding_la_SOURCES = \
+	$(v8binding_sources)
+
+libV8Binding_la_CXXFLAGS = \
+	$(SYMBOL_VISIBILITY_INLINES) \
+	$(global_cxxflags)
+
+libV8Binding_la_CFLAGS = \
+	$(SYMBOL_VISIBILITY) \
+	$(global_cflags)
+
+libV8Binding_la_CPPFLAGS = \
 	-DBUILDING_WEBKIT \
 	$(global_cppflags) \
 	$(webcore_cppflags) \
