@@ -283,6 +283,9 @@ bool V8DOMWindowShell::initContextIfNeeded()
     if (!m_context.IsEmpty())
         return false;
 
+    v8::Local<v8::Context> nodeContext;
+    nodeContext = v8::Context::GetEntered();
+
     // Create a handle scope for all local handles.
     v8::HandleScope handleScope;
 
@@ -315,6 +318,23 @@ bool V8DOMWindowShell::initContextIfNeeded()
 
     v8::Local<v8::Context> v8Context = v8::Local<v8::Context>::New(m_context);
     v8::Context::Scope contextScope(v8Context);
+
+    if (!nodeContext.IsEmpty()) {
+        v8Context->SetSecurityToken (nodeContext->GetSecurityToken());
+        const char* migrateNames[] = {"process", "console", "require" };
+        v8::Local<v8::Object> nodeGlobal =  nodeContext->Global();
+        v8::Local<v8::Object> winGlobal = v8Context->Global();
+        v8::Local<v8::Value> value;
+
+        winGlobal->Set (v8::String::New("global"),  nodeGlobal);
+        for (int i = 0; i < sizeof(migrateNames) / sizeof(char*); i++) {
+            value = nodeContext->Global()->Get(v8::String::New(migrateNames[i]));
+            ASSERT (!value->IsUndefined());
+            winGlobal->Set(v8::String::New(migrateNames[i]), value);
+        }
+        nodeGlobal->Set (v8::String::New("window"), winGlobal);
+    }
+
 
     // Store the first global object created so we can reuse it.
     if (m_global.IsEmpty()) {
