@@ -321,20 +321,7 @@ bool V8DOMWindowShell::initContextIfNeeded()
 
     if (!nodeContext.IsEmpty()) {
         v8Context->SetSecurityToken (nodeContext->GetSecurityToken());
-        const char* migrateNames[] = {"process", "console", "require" };
-        v8::Local<v8::Object> nodeGlobal =  nodeContext->Global();
-        v8::Local<v8::Object> winGlobal = v8Context->Global();
-        v8::Local<v8::Value> value;
-
-        winGlobal->Set (v8::String::New("global"),  nodeGlobal);
-        for (int i = 0; i < sizeof(migrateNames) / sizeof(char*); i++) {
-            value = nodeContext->Global()->Get(v8::String::New(migrateNames[i]));
-            ASSERT (!value->IsUndefined());
-            winGlobal->Set(v8::String::New(migrateNames[i]), value);
-        }
-        nodeGlobal->Set (v8::String::New("window"), winGlobal);
     }
-
 
     // Store the first global object created so we can reuse it.
     if (m_global.IsEmpty()) {
@@ -363,6 +350,20 @@ bool V8DOMWindowShell::initContextIfNeeded()
     updateDocument();
 
     setSecurityToken();
+
+    if (!nodeContext.IsEmpty()) {
+        const char* migrateNames[] = {"global", "process", "console", "require" };
+        v8::Local<v8::Object> nodeGlobal =  nodeContext->Global();
+        v8::Local<v8::Object> winGlobal = v8Context->Global();
+        v8::Local<v8::Value> value;
+
+        for (int i = 0; i < sizeof(migrateNames) / sizeof(char*); i++) {
+            value = nodeContext->Global()->Get(v8::String::New(migrateNames[i]));
+            if (!value->IsUndefined())
+                winGlobal->Set(v8::String::New(migrateNames[i]), value);
+        }
+        nodeGlobal->Set (v8::String::New("window"), winGlobal);
+    }
 
     m_frame->loader()->client()->didCreateScriptContext(m_context, 0);
 
@@ -528,7 +529,7 @@ void V8DOMWindowShell::setSecurityToken()
     Document* document = m_frame->document();
     // Setup security origin and security token.
     if (!document) {
-        m_context->UseDefaultSecurityToken();
+        // m_context->UseDefaultSecurityToken();
         return;
     }
 
@@ -548,7 +549,7 @@ void V8DOMWindowShell::setSecurityToken()
     // case, we use the global object as the security token to avoid
     // calling canAccess when a script accesses its own objects.
     if (token.isEmpty() || token == "null") {
-        m_context->UseDefaultSecurityToken();
+        // m_context->UseDefaultSecurityToken();
         return;
     }
 
