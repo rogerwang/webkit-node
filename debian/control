@@ -1,0 +1,61 @@
+Source: webkit-node
+Priority: optional
+Section: web
+Maintainer: Roger Wang <roger.wang@linux.intel.com>
+Build-Depends: gawk, chrpath, debhelper (>= 5.0), libgtk2.0-dev (>= 2.24.3), gir1.2-gtk-2.0, libgtk-3-dev, gir1.2-gtk-3.0 (>= 3.0.0), libpango1.0-dev (>= 1.16), libicu-dev, libxslt-dev, libsoup2.4-dev (>= 2.32.2), gir1.2-soup-2.4, libsqlite3-dev, gperf, bison, flex, libjpeg-dev, libpng12-dev, libxt-dev, autotools-dev, libgstreamer-plugins-base0.10-dev, libenchant-dev, gtk-doc-tools, libgail-dev, libgail-3-dev, libgeoclue-dev, gobject-introspection (>= 0.9.12-4), libgirepository1.0-dev (>= 0.9.12-4), libv8-dev
+Build-Conflicts: gir-repository-dev
+Standards-Version: 3.9.2
+Homepage: http://webkitgtk.org/
+Vcs-Browser: http://git.debian.org/?p=pkg-webkit/webkit.git
+Vcs-Git: git://git.debian.org/git/pkg-webkit/webkit.git
+
+Package: libwebkitnode-1.0-0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Breaks: midori (<< 0.4.1-2), claws-mail-fancy-plugin (<< 3.7.10-3)
+Description: Web content engine library for node-webkit
+ WebKit is a web content engine, derived from KHTML and KJS from KDE, and
+ used primarily in Apple's Safari browser.  It is made to be embedded in
+ other applications, such as mail readers, or web browsers.
+ .
+ It is able to display content such as HTML, SVG, XML, and others. It also
+ supports DOM, XMLHttpRequest, XSLT, CSS, Javascript/ECMAscript and more.
+ .
+ This is the library for node-webkit.
+
+Package: libwebkitnode-dev
+Section: libdevel
+Priority: extra
+Architecture: any
+Depends: libwebkitnode-1.0-0 (= ${binary:Version}),
+         libgtk2.0-dev (>= 2.24.3),
+         libsoup2.4-dev (>= 2.25.91),
+         ${misc:Depends}
+Description: Web content engine library for node-webkit - Development files
+ WebKit is a web content engine, derived from KHTML and KJS from KDE, and
+ used primarily in Apple's Safari browser.  It is made to be embedded in
+ other applications, such as mail readers, or web browsers.
+ .
+ It is able to display content such as HTML, SVG, XML, and others. It also
+ supports DOM, XMLHttpRequest, XSLT, CSS, Javascript/ECMAscript and more.
+ .
+ This package provides development files required to build node-webkit.
+
+Package: libwebkitnode-1.0-0-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: libwebkitnode-1.0-0 (= ${binary:Version}),
+         ${misc:Depends}
+Description: Web content engine library for node-webkit - Debugging symbols
+ WebKit is a web content engine, derived from KHTML and KJS from KDE, and
+ used primarily in Apple's Safari browser.  It is made to be embedded in
+ other applications, such as mail readers, or web browsers.
+ .
+ It is able to display content such as HTML, SVG, XML, and others. It also
+ supports DOM, XMLHttpRequest, XSLT, CSS, Javascript/ECMAscript and more.
+ .
+ This package provides the debugging symbols for the Webkit library for node-webkit.
+
