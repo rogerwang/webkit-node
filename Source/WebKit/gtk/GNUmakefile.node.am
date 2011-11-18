@@ -4,32 +4,32 @@ GTESTER = gtester
 GTESTER_REPORT = gtester-report
 
 lib_LTLIBRARIES += \
-	libwebkitgtk-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
+	libwebkitnode-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
 
-nodist_libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES = \
+nodist_libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES = \
 	$(webkitgtk_built_sources)
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_ladir = $(libwebkitgtkincludedir)/webkit
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_HEADERS = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_ladir = $(libwebkitgtkincludedir)/webkit
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_HEADERS = \
 	$(webkitgtk_static_h_api)
 
-nodist_libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_HEADERS = \
+nodist_libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_HEADERS = \
 	$(webkitgtk_built_h_api) \
 	$(GENSOURCES_WEBKIT)/webkitenumtypes.h
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES = \
 	$(webkitgtk_sources)
 
 if USE_V8
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES += \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_SOURCES += \
 	$(javascriptcore_sources)
 endif
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CXXFLAGS = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CXXFLAGS = \
 	$(SYMBOL_VISIBILITY_INLINES) \
 	$(global_cxxflags)
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CFLAGS = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CFLAGS = \
 	$(SYMBOL_VISIBILITY) \
 	$(global_cflags)
 
@@ -45,7 +45,7 @@ endif
 # When building WebCore/WebKit, we want WebCore/config.h and NOT JavaScriptCore/config.h,
 # hence, it's important that WebCore/ should come first before JavaScriptCore in the
 # include path.
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CPPFLAGS = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CPPFLAGS = \
 	-DBUILDING_WEBKIT \
 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\" \
 	-DDATA_DIR=\"${datadir}\" \
@@ -79,22 +79,22 @@ libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_CPPF
 	$(XT_CFLAGS) \
 	$(ZLIB_CFLAGS)
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LDFLAGS = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LDFLAGS = \
 	-version-info @LIBWEBKITGTK_VERSION@ \
 	$(version_script) \
 	$(no_undefined)
 
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD = \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD = \
 	-lpthread \
 	libWebCore.la
 
 if USE_JSC
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
 	libjavascriptcoregtk-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
 endif # END USE_JSC
 
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
 	libWebCoreGtk.la \
         libV8Binding.la \
 	$(webcore_ldflags) \
@@ -125,7 +125,7 @@ libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBA
 	$(ZLIB_LIBS)
 
 if USE_V8
-libwebkitgtk_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
+libwebkitnode_@WEBKITGTK_API_MAJOR_VERSION@_@WEBKITGTK_API_MINOR_VERSION@_la_LIBADD += \
 	$(V8_LIBS)
 endif # END USE_V8
 
@@ -286,7 +286,7 @@ JSCore-@WEBKITGTK_API_VERSION@.gir: $(top_builddir)/Source/WebKit/gtk/JSCore-@WE
 JSCORE_GIRSOURCES += JSCore-@WEBKITGTK_API_VERSION@.gir
 WEBKIT_GIRSOURCES += WebKit-@WEBKITGTK_API_VERSION@.gir
 
-$(WEBKIT_GIRSOURCES): $(G_IR_SCANNER) $(JSCORE_GIRSOURCES) libwebkitgtk-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
+$(WEBKIT_GIRSOURCES): $(G_IR_SCANNER) $(JSCORE_GIRSOURCES) libwebkitnode-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
 	$(AM_V_GEN)$(G_IR_SCANNER) -v --warn-all \
 	     --symbol-prefix=webkit \
 	     --identifier-prefix=WebKit \
@@ -411,12 +411,12 @@ EXTRA_DIST += \
 	$(WebKit)/org.webkitgtk.gschema.xml.in
 
 # extra resource files
-resourcesdir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/resources
+resourcesdir = ${datadir}/webkitnode-@WEBKITGTK_API_VERSION@/resources
 dist_resources_DATA = \
 	$(shell ls $(srcdir)/Source/WebKit/gtk/resources/*.html)
 
 # Build unit tests
-noinst_PROGRAMS += $(TEST_PROGS)
+#noinst_PROGRAMS += $(TEST_PROGS)
 webkit_tests_cflags = \
 	-fno-strict-aliasing \
 	-I$(srcdir)/Source/JavaScriptCore/ForwardingHeaders \
@@ -434,7 +434,7 @@ webkit_tests_cflags = \
 
 #	libjavascriptcoregtk-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la
 webkit_tests_ldadd = \
-	libwebkitgtk-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la \
+	libwebkitnode-@WEBKITGTK_API_MAJOR_VERSION@.@WEBKITGTK_API_MINOR_VERSION@.la \
 	$(GTK_LIBS) \
 	$(GLIB_LIBS) \
 	$(LIBSOUP_LIBS)

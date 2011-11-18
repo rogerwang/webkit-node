@@ -216,7 +216,7 @@ case "$with_gtk" in
           WEBKITGTK_API_MAJOR_VERSION=3
           WEBKITGTK_API_MINOR_VERSION=0
           WEBKITGTK_API_VERSION=3.0
-          WEBKITGTK_PC_NAME=webkitgtk
+          WEBKITGTK_PC_NAME=webkit
           GAIL_PC_NAME=gail-3.0
           GAIL_REQUIRED_VERSION=$GAIL3_REQUIRED_VERSION
           ;;
@@ -872,6 +872,20 @@ if test "$with_jsengine" = "v8"; then
   AC_SUBST([V8_LIBS])
 fi
 
+# check if we're building for NodeJS
+AC_MSG_CHECKING([whether to build for NodeJS])
+AC_ARG_ENABLE(nodejs_build,
+              AC_HELP_STRING([--enable-nodejs-build],
+                             [enable NodeJS build default=no, default=yes for NodeJS builds, need --with-jsengine=v8]),
+              [],[if test "$with_jsengine" = "v8"; then enable_nodejs_build="yes"; else enable_nodejs_build=="no"; fi])
+AC_MSG_RESULT([$enable_nodejs_build])
+
+#add NodeJS build flags
+if test "$enable_nodejs_build" = "yes"; then
+   WEBKITGTK_PC_NAME=webkitnode
+   AC_SUBST([WEBKITGTK_PC_NAME])
+fi
+
 # Opcode stats
 AC_MSG_CHECKING([whether to enable opcode stats])
 AC_ARG_ENABLE([opcode-stats],
@@ -1221,21 +1235,30 @@ AM_CONDITIONAL([ENABLE_MUTATION_OBSERVERS],[test "$enable_mutation_observers" = 
 # Gtk conditionals
 AM_CONDITIONAL([ENABLE_INTROSPECTION],[test "$enable_introspection" = "yes"])
 
+# NodeJS conditionals
+AM_CONDITIONAL([ENABLE_NODEJS],[test "$enable_nodejs_build" = "yes"])
+ 
+
 AC_CONFIG_FILES([
 GNUmakefile
 ])
- 
+
 
 AC_CONFIG_FILES([
 Source/WebKit/gtk/webkit/webkitversion.h
 Source/WebKit/gtk/docs/GNUmakefile
 Source/WebKit/gtk/docs/version.xml
+])
+
+if test "$enable_webkit2" = "yes"; then
+AC_CONFIG_FILES([
 Source/WebKit2/UIProcess/API/gtk/docs/GNUmakefile
 Source/WebKit2/UIProcess/API/gtk/docs/version.xml
 ])
+fi
 
 AC_CONFIG_FILES([
-Source/WebKit/gtk/${WEBKITGTK_PC_NAME}-${WEBKITGTK_API_VERSION}.pc:Source/WebKit/gtk/webkit.pc.in
+Source/WebKit/gtk/${WEBKITGTK_PC_NAME}-${WEBKITGTK_API_VERSION}.pc:Source/WebKit/gtk/${WEBKITGTK_PC_NAME}.pc.in
 Source/WebKit/gtk/JSCore-${WEBKITGTK_API_VERSION}.gir:Source/WebKit/gtk/JSCore.gir.in
 Source/WebKit/gtk/org.webkitgtk-${WEBKITGTK_API_VERSION}.gschema.xml:Source/WebKit/gtk/org.webkitgtk.gschema.xml.in
 Source/JavaScriptCore/javascriptcoregtk-${WEBKITGTK_API_VERSION}.pc:Source/JavaScriptCore/javascriptcoregtk.pc.in
@@ -1328,6 +1351,8 @@ GTK+ configuration:
  GDK target                                               : $with_target
  Hildon UI extensions                                     : $with_hildon
  Introspection support                                    : $enable_introspection
+
+Build for NodeJS                                          : $enable_nodejs_build
 "
 if test "$with_unicode_backend" = "glib"; then
    echo "     >> WARNING: the glib-based unicode backend is slow and incomplete <<"

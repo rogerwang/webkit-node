@@ -90,6 +90,7 @@ build-stamp:
 			--build=$(DEB_BUILD_GNU_TYPE) \
 			--with-gtk=$${version} \
             --with-jsengine=v8 \
+            --enable-nodejs-build \
 		cd ..; \
 	done
 

@@ -1030,7 +1030,14 @@ EXTRA_DIST += \
 endif # END USE_V8
 
 # Installing web inspector files
-webinspectordir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/webinspector
+if ENABLE_NODEJS
+package_basename = webkitnode
+else
+package_basename = webkitgtk
+endif
+
+webinspectordir = ${datadir}/$(package_basename)-@WEBKITGTK_API_VERSION@/webinspector
+
 dist_webinspector_DATA = \
 	$(WebCore)/English.lproj/localizedStrings.js \
 	DerivedSources/WebCore/InspectorBackendStub.js \
@@ -1038,11 +1045,11 @@ dist_webinspector_DATA = \
 	$(shell ls $(WebCore)/inspector/front-end/*.html) \
 	$(shell ls $(WebCore)/inspector/front-end/*.css)
 
-webinspectoruglifyjsdir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/webinspector/UglifyJS
+webinspectoruglifyjsdir = ${datadir}/$(package_basename)-@WEBKITGTK_API_VERSION@/webinspector/UglifyJS
 dist_webinspectoruglifyjs_DATA = \
 	$(shell ls $(WebCore)/inspector/front-end/UglifyJS/*.js)
 
-webinspectorimagesdir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/webinspector/Images
+webinspectorimagesdir = ${datadir}/$(package_basename)-@WEBKITGTK_API_VERSION@/webinspector/Images
 dist_webinspectorimages_DATA = \
 	$(shell ls $(WebCore)/inspector/front-end/Images/*.gif) \
 	$(shell ls $(WebCore)/inspector/front-end/Images/*.png)
@@ -1063,7 +1070,7 @@ ${GENSOURCES_INSPECTOR}/inspector.html: $(WebCore)/inspector/front-end/*.html \
 	$(AM_V_at)cp ${dist_webinspectoruglifyjs_DATA} ${GENSOURCES_INSPECTOR}/UglifyJS
 	$(AM_V_at)cp ${dist_webinspectorimages_DATA} ${GENSOURCES_INSPECTOR}/images
 
-webresourcesdir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/images
+webresourcesdir = ${datadir}/$(package_basename)-@WEBKITGTK_API_VERSION@/images
 dist_webresources_DATA = \
 	$(WebCore)/Resources/textAreaResizeCorner.png \
 	$(WebCore)/Resources/nullPlugin.png \

@@ -41,7 +41,11 @@ WebCore := $(srcdir)/Source/WebCore
 WebKit := $(srcdir)/Source/WebKit/gtk
 WebKit2 := $(srcdir)/Source/WebKit2
 pkgconfigdir := $(libdir)/pkgconfig
+if ENABLE_NODEJS
+libwebkitgtkincludedir := $(prefix)/include/webkitnode-@WEBKITGTK_API_VERSION@
+else
 libwebkitgtkincludedir := $(prefix)/include/webkitgtk-@WEBKITGTK_API_VERSION@
+endif
 
 # Libraries and support components
 bin_PROGRAMS :=
@@ -202,10 +206,16 @@ global_cppflags += \
 	-DWTF_USE_V8=1
 endif
 
+if ENABLE_NODEJS
+global_cppflags += \
+	-DWTF_USE_NODEJS=1
+endif
+
 EXTRA_DIST += \
 	$(srcdir)/Source/autotools/symbols.filter \
 	$(srcdir)/gtk-doc.make \
-	$(srcdir)/Source/WebKit/LICENSE
+	$(srcdir)/Source/WebKit/LICENSE \
+        $(srcdir)/debian
 
 # Include module makefiles
 if USE_JSC
@@ -216,11 +226,18 @@ include Source/JavaScriptCore/GNUmakefile.v8.am
 endif
 
 include Source/WebCore/GNUmakefile.am
+
+if ENABLE_NODEJS
+include Source/WebKit/gtk/GNUmakefile.node.am
+include Source/WebCore/bindings/gobject/GNUmakefile.am
+include Source/WebKit/gtk/po/GNUmakefile.am
+else
 include Source/WebKit/gtk/GNUmakefile.am
 include Source/WebCore/bindings/gobject/GNUmakefile.am
 include Tools/GNUmakefile.am
 include Source/WebKit/gtk/po/GNUmakefile.am
 include Tools/DumpRenderTree/gtk/GNUmakefile.ImageDiff.am
+endif
 
 if ENABLE_WEBKIT2
 include Source/WebKit2/GNUmakefile.am

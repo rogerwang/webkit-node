@@ -283,9 +283,11 @@ bool V8DOMWindowShell::initContextIfNeeded()
     if (!m_context.IsEmpty())
         return false;
 
+#if USE(NODEJS)
+
     v8::Local<v8::Context> nodeContext;
     nodeContext = v8::Context::GetEntered();
-
+#endif
     // Create a handle scope for all local handles.
     v8::HandleScope handleScope;
 
@@ -319,10 +321,11 @@ bool V8DOMWindowShell::initContextIfNeeded()
     v8::Local<v8::Context> v8Context = v8::Local<v8::Context>::New(m_context);
     v8::Context::Scope contextScope(v8Context);
 
+#if USE(NODEJS)
     if (!nodeContext.IsEmpty()) {
         v8Context->SetSecurityToken (nodeContext->GetSecurityToken());
     }
-
+#endif
     // Store the first global object created so we can reuse it.
     if (m_global.IsEmpty()) {
         m_global = v8::Persistent<v8::Object>::New(v8Context->Global());
@@ -351,6 +354,8 @@ bool V8DOMWindowShell::initContextIfNeeded()
 
     setSecurityToken();
 
+
+#if USE(NODEJS)
     if (!nodeContext.IsEmpty()) {
         const char* migrateNames[] = {"global", "process", "console", "require" };
         v8::Local<v8::Object> nodeGlobal =  nodeContext->Global();
@@ -364,6 +369,8 @@ bool V8DOMWindowShell::initContextIfNeeded()
         }
         nodeGlobal->Set (v8::String::New("window"), winGlobal);
     }
+
+#endif
 
     m_frame->loader()->client()->didCreateScriptContext(m_context, 0);
 
@@ -529,7 +536,9 @@ void V8DOMWindowShell::setSecurityToken()
     Document* document = m_frame->document();
     // Setup security origin and security token.
     if (!document) {
-        // m_context->UseDefaultSecurityToken();
+#if !USE(NODEJS)
+        m_context->UseDefaultSecurityToken();
+#endif
         return;
     }
 
@@ -549,8 +558,10 @@ void V8DOMWindowShell::setSecurityToken()
     // case, we use the global object as the security token to avoid
     // calling canAccess when a script accesses its own objects.
     if (token.isEmpty() || token == "null") {
-        // m_context->UseDefaultSecurityToken();
-        return;
+#if !USE(NODEJS)
+      m_context->UseDefaultSecurityToken();
+#endif
+      return;
     }
 
     CString utf8Token = token.utf8();
