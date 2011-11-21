@@ -1,7 +1,14 @@
+.deps/
+.libs/
+*.la
+*.mo
+*.lo
 *.mode*
 *.pbxuser
 *.perspective*
 *.pyc
+.dirstamp
+*.o
 .DS_Store
 build/
 /WebKitBuild/
