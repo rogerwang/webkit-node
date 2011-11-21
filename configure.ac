@@ -103,6 +103,9 @@ fi
 # cleanly with that.
 if test "$CXX" = "g++"; then
    CXX_VERSION=`$CXX -dumpversion`
+   if test "$CXX_VERSION" = "4.6"; then
+       CXX_VERSION="4.6.0"
+   fi
    AX_COMPARE_VERSION([$CXX_VERSION],[ge],[4.6.0],CXXFLAGS="$CXXFLAGS -Wno-c++0x-compat")
 fi
 
