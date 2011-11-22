@@ -10,6 +10,18 @@ javascriptcore_cppflags += \
 	-I$(srcdir)/Source/JavaScriptCore/runtime \
 	-I$(top_builddir)/Source/JavaScriptCore
 
+EXTRA_DIST += \
+	Source/JavaScriptCore/AUTHORS \
+	Source/JavaScriptCore/ChangeLog \
+	Source/JavaScriptCore/COPYING.LIB \
+	Source/JavaScriptCore/create_hash_table \
+	Source/JavaScriptCore/create_regex_tables \
+	Source/JavaScriptCore/icu/LICENSE \
+	Source/JavaScriptCore/icu/README \
+	Source/JavaScriptCore/KeywordLookupGenerator.py \
+	Source/JavaScriptCore/parser/Keywords.table \
+	Source/JavaScriptCore/THANKS
+
 javascriptcore_sources += \
 	Source/JavaScriptCore/wtf/Alignment.h \
 	Source/JavaScriptCore/wtf/AlwaysInline.h \
@@ -221,9 +233,7 @@ endif # USE_ICU_UNICODE
 # ----
 if USE_GLIB_UNICODE
 javascriptcore_sources += \
-	Source/JavaScriptCore/wtf/unicode/UnicodeMacrosFromICU.h \
-	Source/JavaScriptCore/wtf/unicode/gliUnicodeGLib.h \
-	Source/JavaScriptCore/wtf/unicode/gliUnicodeGLib.cpp
+	Source/JavaScriptCore/wtf/unicode/UnicodeMacrosFromICU.h
 endif # USE_GLIB_UNICODE
 
 Source/JavaScriptCore/RegExpJitTables.h: $(srcdir)/Source/JavaScriptCore/create_regex_tables

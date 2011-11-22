@@ -26,6 +26,7 @@
 #include "GRefPtrGtk.h"
 #include "GtkVersioning.h"
 #include "MediaPlayer.h"
+#include "CString.h"
 
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>

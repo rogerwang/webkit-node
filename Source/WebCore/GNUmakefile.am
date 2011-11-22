@@ -993,7 +993,8 @@ endif # END USE_JSC
 
 if USE_V8
 EXTRA_DIST += \
-	Source/WebCore/bindings/scripts/CodeGeneratorV8.pm
+	Source/WebCore/bindings/scripts/CodeGeneratorV8.pm \
+        Source/WebCore/bindings/v8/custom/V8ArrayBufferViewCustomScript.js
 endif # END USE_V8
 
 # Installing web inspector files

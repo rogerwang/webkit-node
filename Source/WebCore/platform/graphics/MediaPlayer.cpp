@@ -38,6 +38,7 @@
 #include "MediaPlayerPrivate.h"
 #include "Settings.h"
 #include "TimeRanges.h"
+#include "CString.h"
 
 #if PLATFORM(QT)
 #include <QtGlobal>

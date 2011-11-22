@@ -3397,6 +3397,7 @@ webcore_sources += \
 	Source/WebCore/storage/IDBTransaction.h \
 	Source/WebCore/storage/IDBVersionChangeEvent.h \
 	Source/WebCore/storage/IDBVersionChangeRequest.h \
+        Source/WebCore/storage/IDBPendingTransactionMonitor.h \
 	Source/WebCore/storage/LocalStorageTask.cpp \
 	Source/WebCore/storage/LocalStorageTask.h \
 	Source/WebCore/storage/LocalStorageThread.cpp \
@@ -4065,6 +4066,11 @@ webcoregtk_sources += \
 	Source/WebCore/platform/gtk/WidgetRenderingContext.h \
 	Source/WebCore/plugins/gtk/PluginPackageGtk.cpp \
 	Source/WebCore/plugins/gtk/PluginViewGtk.cpp
+
+if USE_V8
+webcoregtk_sources += \
+        Source/WebCore/platform/gtk/PlatformSupport.h
+endif
 
 if TARGET_X11
 webcoregtk_sources += \

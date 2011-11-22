@@ -46,6 +46,7 @@
 #include "Logging.h"
 #include "Page.h"
 #include "Settings.h"
+#include "CString.h"
 
 namespace WebCore {
 
