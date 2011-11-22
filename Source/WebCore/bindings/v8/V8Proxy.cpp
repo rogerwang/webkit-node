@@ -57,7 +57,6 @@
 #include "V8DOMMap.h"
 #include "V8DOMWindow.h"
 #include "V8EventException.h"
-#include "V8FileException.h"
 #include "V8HiddenPropertyName.h"
 #include "V8IsolatedContext.h"
 #include "V8OperationNotAllowedException.h"
@@ -67,6 +66,10 @@
 #include "V8XPathException.h"
 #include "WorkerContext.h"
 #include "WorkerContextExecutionProxy.h"
+
+#if ENABLE(BLOB) || ENABLE(FILE_SYSTEM)
+#include "V8FileException.h"
+#endif
 
 #if ENABLE(INDEXED_DATABASE)
 #include "V8IDBDatabaseException.h"

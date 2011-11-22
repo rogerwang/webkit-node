@@ -1096,10 +1096,12 @@ static WebKitNavigationResponse webkit_web_view_real_navigation_requested(WebKit
     return WEBKIT_NAVIGATION_RESPONSE_ACCEPT;
 }
 
+#if USE(JSC)
 static void webkit_web_view_real_window_object_cleared(WebKitWebView*, WebKitWebFrame*, JSGlobalContextRef context, JSObjectRef window_object)
 {
     notImplemented();
 }
+#endif // END USE_JSC
 
 static gchar* webkit_web_view_real_choose_file(WebKitWebView*, WebKitWebFrame*, const gchar* old_name)
 {
@@ -1840,6 +1842,7 @@ static void webkit_web_view_class_init(WebKitWebViewClass* webViewClass)
             G_TYPE_STRING,
             WEBKIT_TYPE_WEB_POLICY_DECISION);
 
+#if USE(JSC)
     /**
      * WebKitWebView::window-object-cleared:
      * @webView: the object on which the signal is emitted
@@ -1865,6 +1868,7 @@ static void webkit_web_view_class_init(WebKitWebViewClass* webViewClass)
             WEBKIT_TYPE_WEB_FRAME,
             G_TYPE_POINTER,
             G_TYPE_POINTER);
+#endif // END USE_JSC
 
     /**
      * WebKitWebView::download-requested:
@@ -2659,7 +2663,9 @@ static void webkit_web_view_class_init(WebKitWebViewClass* webViewClass)
     webViewClass->web_view_ready = webkit_web_view_real_web_view_ready;
     webViewClass->close_web_view = webkit_web_view_real_close_web_view;
     webViewClass->navigation_requested = webkit_web_view_real_navigation_requested;
+#if USE(JSC)
     webViewClass->window_object_cleared = webkit_web_view_real_window_object_cleared;
+#endif // END USE_JSC
     webViewClass->choose_file = webkit_web_view_real_choose_file;
     webViewClass->script_alert = webkit_web_view_real_script_alert;
     webViewClass->script_confirm = webkit_web_view_real_script_confirm;

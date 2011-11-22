@@ -48,6 +48,7 @@
 #if USE(ICU_UNICODE) && !UCONFIG_NO_COLLATION
 #include "TextBreakIteratorInternalICU.h"
 #include <unicode/usearch.h>
+#include <wtf/text/CString.h>
 #endif
 
 using namespace WTF::Unicode;

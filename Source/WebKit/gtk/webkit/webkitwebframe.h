@@ -24,7 +24,9 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 #include <JavaScriptCore/JSBase.h>
+#endif
 
 #include <webkit/webkitdefines.h>
 #include <webkit/webkitdomdefines.h>
@@ -143,8 +145,10 @@ WEBKIT_API WebKitWebFrame *
 webkit_web_frame_find_frame         (WebKitWebFrame       *frame,
                                      const gchar          *name);
 
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 WEBKIT_API JSGlobalContextRef
 webkit_web_frame_get_global_context (WebKitWebFrame       *frame);
+#endif
 
 WEBKIT_API GtkPrintOperationResult
 webkit_web_frame_print_full         (WebKitWebFrame       *frame,

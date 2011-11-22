@@ -39,13 +39,9 @@
 #include "FrameSelection.h"
 #include "FrameTree.h"
 #include "FrameView.h"
-#include "GCController.h"
 #include "GraphicsContext.h"
 #include "GtkVersioning.h"
 #include "HTMLFrameOwnerElement.h"
-#include "JSDOMBinding.h"
-#include "JSDOMWindow.h"
-#include "JSElement.h"
 #include "PlatformContextCairo.h"
 #include "PrintContext.h"
 #include "RenderListItem.h"
@@ -66,10 +62,17 @@
 #include "webkitwebframeprivate.h"
 #include "webkitwebview.h"
 #include "webkitwebviewprivate.h"
-#include <JavaScriptCore/APICast.h>
 #include <atk/atk.h>
 #include <glib/gi18n-lib.h>
 #include <wtf/text/CString.h>
+
+#if USE(JSC)
+#include "GCController.h"
+#include "JSDOMBinding.h"
+#include "JSDOMWindow.h"
+#include "JSElement.h"
+#include <JavaScriptCore/APICast.h>
+#endif // END USE_JSC
 
 #if ENABLE(SVG)
 #include "SVGSMILElement.h"
@@ -694,6 +697,7 @@ WebKitWebFrame* webkit_web_frame_find_frame(WebKitWebFrame* frame, const gchar* 
     return kit(coreFrame->tree()->find(AtomicString(nameString)));
 }
 
+#if USE(JSC)
 /**
  * webkit_web_frame_get_global_context:
  * @frame: a #WebKitWebFrame
@@ -713,6 +717,7 @@ JSGlobalContextRef webkit_web_frame_get_global_context(WebKitWebFrame* frame)
 
     return toGlobalRef(coreFrame->script()->globalObject(mainThreadNormalWorld())->globalExec());
 }
+#endif // END USE_JSC
 
 /**
  * webkit_web_frame_get_data_source:

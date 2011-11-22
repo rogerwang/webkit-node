@@ -29,9 +29,10 @@
  */
 
 #include "config.h"
-#include "V8DirectoryEntry.h"
 
 #if ENABLE(FILE_SYSTEM)
+
+#include "V8DirectoryEntry.h"
 
 #include "DirectoryEntry.h"
 #include "ExceptionCode.h"

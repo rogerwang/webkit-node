@@ -27,6 +27,9 @@
 
 #if ENABLE(MEDIA_STREAM)
 
+#include "EventTarget.h"
+#include "MediaStreamFrameController.h"
+#include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
 namespace WebCore {

@@ -29,6 +29,8 @@
 #include "SelectElement.h"
 #include "TextIterator.h"
 
+#include <wtf/text/CString.h>
+
 namespace WebCore {
 
 void AXObjectCache::detachWrapper(AccessibilityObject* obj)

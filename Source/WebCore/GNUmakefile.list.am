@@ -19,7 +19,9 @@ webcore_built_sources += \
 	DerivedSources/WebCore/InspectorBackendDispatcher.h \
 	DerivedSources/WebCore/InspectorFrontend.cpp \
 	DerivedSources/WebCore/InspectorFrontend.h \
-	DerivedSources/WebCore/InspectorProtocolVersion.h \
+	DerivedSources/WebCore/InspectorProtocolVersion.h
+if USE_JSC
+webcore_built_sources += \
 	DerivedSources/WebCore/JSAbstractWorker.cpp \
 	DerivedSources/WebCore/JSAbstractWorker.h \
 	DerivedSources/WebCore/JSArrayBuffer.cpp \
@@ -574,7 +576,9 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSXMLSerializer.cpp \
 	DerivedSources/WebCore/JSXMLSerializer.h \
 	DerivedSources/WebCore/JSXSLTProcessor.cpp \
-	DerivedSources/WebCore/JSXSLTProcessor.h \
+	DerivedSources/WebCore/JSXSLTProcessor.h
+endif
+webcore_built_sources += \
 	DerivedSources/WebCore/MathMLElementFactory.cpp \
 	DerivedSources/WebCore/MathMLElementFactory.h \
 	DerivedSources/WebCore/MathMLNames.cpp \
@@ -648,7 +652,9 @@ webcore_sources += \
 	Source/WebCore/bindings/generic/EventConstructors.h \
 	Source/WebCore/bindings/generic/GenericBinding.h \
 	Source/WebCore/bindings/generic/RuntimeEnabledFeatures.cpp \
-	Source/WebCore/bindings/generic/RuntimeEnabledFeatures.h \
+	Source/WebCore/bindings/generic/RuntimeEnabledFeatures.h
+if USE_JSC
+webcore_sources += \
 	Source/WebCore/bindings/js/CachedScriptSourceProvider.h \
 	Source/WebCore/bindings/js/CallbackFunction.cpp \
 	Source/WebCore/bindings/js/CallbackFunction.h \
@@ -875,10 +881,14 @@ webcore_sources += \
 	Source/WebCore/bindings/js/WorkerScriptController.cpp \
 	Source/WebCore/bindings/js/WorkerScriptController.h \
 	Source/WebCore/bindings/js/WorkerScriptDebugServer.cpp \
-	Source/WebCore/bindings/js/WorkerScriptDebugServer.h \
+	Source/WebCore/bindings/js/WorkerScriptDebugServer.h
+endif
+webcore_sources += \
 	Source/WebCore/bindings/ScriptControllerBase.cpp \
 	Source/WebCore/bindings/ScriptControllerBase.h \
-	Source/WebCore/bridge/Bridge.h \
+	Source/WebCore/bridge/Bridge.h
+if USE_JSC
+webcore_sources += \
 	Source/WebCore/bridge/c/c_class.cpp \
 	Source/WebCore/bridge/c/c_class.h \
 	Source/WebCore/bridge/c/c_instance.cpp \
@@ -915,7 +925,9 @@ webcore_sources += \
 	Source/WebCore/bridge/runtime_object.cpp \
 	Source/WebCore/bridge/runtime_object.h \
 	Source/WebCore/bridge/runtime_root.cpp \
-	Source/WebCore/bridge/runtime_root.h \
+	Source/WebCore/bridge/runtime_root.h
+endif
+webcore_sources += \
 	Source/WebCore/config.h \
 	Source/WebCore/css/Counter.h \
 	Source/WebCore/css/CSSBorderImageSliceValue.cpp \
@@ -3951,8 +3963,12 @@ webcoregtk_sources += \
 	Source/WebCore/accessibility/gtk/AccessibilityObjectWrapperAtk.h \
 	Source/WebCore/accessibility/gtk/AXObjectCacheAtk.cpp \
 	Source/WebCore/accessibility/gtk/WebKitAccessibleHyperlink.h \
-	Source/WebCore/accessibility/gtk/WebKitAccessibleHyperlink.cpp \
-	Source/WebCore/bindings/js/ScriptControllerGtk.cpp \
+	Source/WebCore/accessibility/gtk/WebKitAccessibleHyperlink.cpp
+if USE_JSC
+webcoregtk_sources += \
+	Source/WebCore/bindings/js/ScriptControllerGtk.cpp
+endif
+webcoregtk_sources += \
 	Source/WebCore/editing/gtk/FrameSelectionGtk.cpp \
 	Source/WebCore/page/gtk/DragControllerGtk.cpp \
 	Source/WebCore/page/gtk/EventHandlerGtk.cpp \
@@ -4126,6 +4142,7 @@ endif # END USE_PANGO
 # Database Support
 # ----
 if ENABLE_SQL_DATABASE
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSDatabase.cpp \
 	DerivedSources/WebCore/JSDatabase.h \
@@ -4150,12 +4167,45 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSSQLTransactionSync.cpp \
 	DerivedSources/WebCore/JSSQLTransactionSyncCallback.cpp \
 	DerivedSources/WebCore/JSSQLTransactionSyncCallback.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8DatabaseCallback.cpp \
+	DerivedSources/WebCore/V8DatabaseCallback.h \
+	DerivedSources/WebCore/V8Database.cpp \
+	DerivedSources/WebCore/V8Database.h \
+	DerivedSources/WebCore/V8DatabaseSync.cpp \
+	DerivedSources/WebCore/V8DatabaseSync.h \
+	DerivedSources/WebCore/V8SQLError.cpp \
+	DerivedSources/WebCore/V8SQLError.h \
+	DerivedSources/WebCore/V8SQLException.cpp \
+	DerivedSources/WebCore/V8SQLException.h \
+	DerivedSources/WebCore/V8SQLResultSet.cpp \
+	DerivedSources/WebCore/V8SQLResultSet.h \
+	DerivedSources/WebCore/V8SQLResultSetRowList.cpp \
+	DerivedSources/WebCore/V8SQLResultSetRowList.h \
+	DerivedSources/WebCore/V8SQLStatementCallback.cpp \
+	DerivedSources/WebCore/V8SQLStatementCallback.h \
+	DerivedSources/WebCore/V8SQLStatementErrorCallback.cpp \
+	DerivedSources/WebCore/V8SQLStatementErrorCallback.h \
+	DerivedSources/WebCore/V8SQLTransactionCallback.cpp \
+	DerivedSources/WebCore/V8SQLTransactionCallback.h \
+	DerivedSources/WebCore/V8SQLTransaction.cpp \
+	DerivedSources/WebCore/V8SQLTransactionErrorCallback.cpp \
+	DerivedSources/WebCore/V8SQLTransactionErrorCallback.h \
+	DerivedSources/WebCore/V8SQLTransaction.h \
+	DerivedSources/WebCore/V8SQLTransactionSyncCallback.cpp \
+	DerivedSources/WebCore/V8SQLTransactionSyncCallback.h \
+	DerivedSources/WebCore/V8SQLTransactionSync.cpp \
+	DerivedSources/WebCore/V8SQLTransactionSync.h
+endif # END USE_V8
 endif # END ENABLE_SQL_DATABASE
 
 # ----
 # HTML5 data transfer items support
 # ----
 if ENABLE_DATA_TRANSFER_ITEMS
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSDataTransferItem.cpp \
 	DerivedSources/WebCore/JSDataTransferItem.h \
@@ -4163,6 +4213,17 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSDataTransferItems.h \
 	DerivedSources/WebCore/JSStringCallback.cpp \
 	DerivedSources/WebCore/JSStringCallback.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8DataTransferItem.cpp \
+	DerivedSources/WebCore/V8DataTransferItem.h \
+	DerivedSources/WebCore/V8DataTransferItems.cpp \
+	DerivedSources/WebCore/V8DataTransferItems.h \
+	DerivedSources/WebCore/V8StringCallback.cpp \
+	DerivedSources/WebCore/V8StringCallback.h
+endif # END USE_V8
+
 webcore_sources += \
 	Source/WebCore/dom/DataTransferItem.cpp \
 	Source/WebCore/dom/DataTransferItem.h \
@@ -4176,6 +4237,7 @@ endif # END ENABLE_DATA_TRANSFER_ITEMS
 # Indexed Database API support
 # ----
 if ENABLE_INDEXED_DATABASE
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSIDBAny.cpp \
 	DerivedSources/WebCore/JSIDBAny.h \
@@ -4197,22 +4259,62 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSIDBRequest.h \
 	DerivedSources/WebCore/JSIDBTransaction.cpp \
 	DerivedSources/WebCore/JSIDBTransaction.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8IDBAny.cpp \
+	DerivedSources/WebCore/V8IDBAny.h \
+	DerivedSources/WebCore/V8IDBDatabaseError.cpp \
+	DerivedSources/WebCore/V8IDBDatabaseError.h \
+	DerivedSources/WebCore/V8IDBDatabaseException.cpp \
+	DerivedSources/WebCore/V8IDBDatabaseException.h \
+	DerivedSources/WebCore/V8IDBDatabase.cpp \
+	DerivedSources/WebCore/V8IDBDatabase.h \
+	DerivedSources/WebCore/V8IDBErrorEvent.cpp \
+	DerivedSources/WebCore/V8IDBErrorEvent.h \
+	DerivedSources/WebCore/V8IDBEvent.cpp \
+	DerivedSources/WebCore/V8IDBEvent.h \
+	DerivedSources/WebCore/V8IDBFactory.cpp \
+	DerivedSources/WebCore/V8IDBFactory.h \
+	DerivedSources/WebCore/V8IDBIndex.cpp \
+	DerivedSources/WebCore/V8IDBIndex.h \
+	DerivedSources/WebCore/V8IDBKeyRange.cpp \
+	DerivedSources/WebCore/V8IDBKeyRange.h \
+	DerivedSources/WebCore/V8IDBObjectStore.cpp \
+	DerivedSources/WebCore/V8IDBObjectStore.h \
+	DerivedSources/WebCore/V8IDBRequest.cpp \
+	DerivedSources/WebCore/V8IDBRequest.h \
+	DerivedSources/WebCore/V8IDBSuccessEvent.cpp \
+	DerivedSources/WebCore/V8IDBSuccessEvent.h \
+	DerivedSources/WebCore/V8IDBTransaction.cpp \
+	DerivedSources/WebCore/V8IDBTransaction.h
+endif # END USE_V8
 endif # END ENABLE_INDEXED_DATABASE
 
 # ----
 # HTML5 client-side session and persistent storage
 # ----
 if ENABLE_DOM_STORAGE
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSStorage.cpp \
 	DerivedSources/WebCore/JSStorageEvent.cpp \
 	DerivedSources/WebCore/JSStorageEvent.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8Storage.cpp \
+	DerivedSources/WebCore/V8StorageEvent.cpp \
+	DerivedSources/WebCore/V8StorageEvent.h \
+	DerivedSources/WebCore/V8Storage.h
+endif # END USE_V8
 endif # END ENABLE_DOM_STORAGE
 
 # ----
 # FileSystem API support
 # ----
 if ENABLE_FILE_SYSTEM
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSDirectoryEntry.cpp \
 	DerivedSources/WebCore/JSDirectoryEntry.h \
@@ -4260,12 +4362,63 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSMetadata.h \
 	DerivedSources/WebCore/JSMetadataCallback.cpp \
 	DerivedSources/WebCore/JSMetadataCallback.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8DirectoryEntry.cpp \
+	DerivedSources/WebCore/V8DirectoryEntry.h \
+	DerivedSources/WebCore/V8DirectoryEntrySync.cpp \
+	DerivedSources/WebCore/V8DirectoryEntrySync.h \
+	DerivedSources/WebCore/V8DirectoryReader.cpp \
+	DerivedSources/WebCore/V8DirectoryReader.h \
+	DerivedSources/WebCore/V8DirectoryReaderSync.cpp \
+	DerivedSources/WebCore/V8DirectoryReaderSync.h \
+	DerivedSources/WebCore/V8DOMFileSystem.cpp \
+	DerivedSources/WebCore/V8DOMFileSystem.h \
+	DerivedSources/WebCore/V8DOMFileSystemSync.cpp \
+	DerivedSources/WebCore/V8DOMFileSystemSync.h \
+	DerivedSources/WebCore/V8EntriesCallback.cpp \
+	DerivedSources/WebCore/V8EntriesCallback.h \
+	DerivedSources/WebCore/V8Entry.cpp \
+	DerivedSources/WebCore/V8Entry.h \
+	DerivedSources/WebCore/V8EntryArray.cpp \
+	DerivedSources/WebCore/V8EntryArray.h \
+	DerivedSources/WebCore/V8EntryArraySync.cpp \
+	DerivedSources/WebCore/V8EntryArraySync.h \
+	DerivedSources/WebCore/V8EntryCallback.cpp \
+	DerivedSources/WebCore/V8EntryCallback.h \
+	DerivedSources/WebCore/V8EntrySync.cpp \
+	DerivedSources/WebCore/V8EntrySync.h \
+	DerivedSources/WebCore/V8ErrorCallback.cpp \
+	DerivedSources/WebCore/V8ErrorCallback.h \
+	DerivedSources/WebCore/V8FileCallback.cpp \
+	DerivedSources/WebCore/V8FileCallback.h \
+	DerivedSources/WebCore/V8FileEntry.cpp \
+	DerivedSources/WebCore/V8FileEntry.h \
+	DerivedSources/WebCore/V8FileEntrySync.cpp \
+	DerivedSources/WebCore/V8FileEntrySync.h \
+	DerivedSources/WebCore/V8FileSystemCallback.cpp \
+	DerivedSources/WebCore/V8FileSystemCallback.h \
+	DerivedSources/WebCore/V8FileWriter.cpp \
+	DerivedSources/WebCore/V8FileWriter.h \
+	DerivedSources/WebCore/V8FileWriterCallback.cpp \
+	DerivedSources/WebCore/V8FileWriterCallback.h \
+	DerivedSources/WebCore/V8FileWriterSync.cpp \
+	DerivedSources/WebCore/V8FileWriterSync.h \
+	DerivedSources/WebCore/V8WebKitFlags.cpp \
+	DerivedSources/WebCore/V8WebKitFlags.h \
+	DerivedSources/WebCore/V8Metadata.cpp \
+	DerivedSources/WebCore/V8Metadata.h \
+	DerivedSources/WebCore/V8MetadataCallback.cpp \
+	DerivedSources/WebCore/V8MetadataCallback.h
+endif # END USE_V8
 endif # END ENABLE_FILE_SYSTEM
 
 # ----
 # XPath Support
 # ----
 if ENABLE_XPATH
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSXPathEvaluator.cpp \
 	DerivedSources/WebCore/JSXPathEvaluator.h \
@@ -4276,7 +4429,22 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSXPathNSResolver.cpp \
 	DerivedSources/WebCore/JSXPathNSResolver.h \
 	DerivedSources/WebCore/JSXPathResult.cpp \
-	DerivedSources/WebCore/JSXPathResult.h \
+	DerivedSources/WebCore/JSXPathResult.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8XPathEvaluator.cpp \
+	DerivedSources/WebCore/V8XPathEvaluator.h \
+	DerivedSources/WebCore/V8XPathException.cpp \
+	DerivedSources/WebCore/V8XPathException.h \
+	DerivedSources/WebCore/V8XPathExpression.cpp \
+	DerivedSources/WebCore/V8XPathExpression.h \
+	DerivedSources/WebCore/V8XPathNSResolver.cpp \
+	DerivedSources/WebCore/V8XPathNSResolver.h \
+	DerivedSources/WebCore/V8XPathResult.cpp \
+	DerivedSources/WebCore/V8XPathResult.h
+endif # END USE_V8
+webcore_built_sources += \
 	DerivedSources/WebCore/XPathGrammar.cpp \
 	DerivedSources/WebCore/XPathGrammar.h
 endif # END ENABLE_XPATH
@@ -4287,6 +4455,7 @@ endif # END ENABLE_XPATH
 # FIXME: allow a more fine-grained inclusion/generation of sources per SVG feature
 # ----
 if ENABLE_SVG
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSElementTimeControl.h \
 	DerivedSources/WebCore/JSSVGAElement.cpp \
@@ -4581,6 +4750,304 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSSVGZoomAndPan.h \
 	DerivedSources/WebCore/JSSVGZoomEvent.cpp \
 	DerivedSources/WebCore/JSSVGZoomEvent.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8ElementTimeControl.h \
+	DerivedSources/WebCore/V8SVGAElement.cpp \
+	DerivedSources/WebCore/V8SVGAElement.h \
+	DerivedSources/WebCore/V8SVGAltGlyphElement.cpp \
+	DerivedSources/WebCore/V8SVGAltGlyphElement.h \
+	DerivedSources/WebCore/V8SVGAltGlyphDefElement.cpp \
+	DerivedSources/WebCore/V8SVGAltGlyphDefElement.h \
+	DerivedSources/WebCore/V8SVGAltGlyphItemElement.cpp \
+	DerivedSources/WebCore/V8SVGAltGlyphItemElement.h \
+	DerivedSources/WebCore/V8SVGAngle.cpp \
+	DerivedSources/WebCore/V8SVGAngle.h \
+	DerivedSources/WebCore/V8SVGAnimateColorElement.cpp \
+	DerivedSources/WebCore/V8SVGAnimateColorElement.h \
+	DerivedSources/WebCore/V8SVGAnimatedAngle.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedAngle.h \
+	DerivedSources/WebCore/V8SVGAnimatedBoolean.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedBoolean.h \
+	DerivedSources/WebCore/V8SVGAnimatedEnumeration.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedEnumeration.h \
+	DerivedSources/WebCore/V8SVGAnimatedInteger.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedInteger.h \
+	DerivedSources/WebCore/V8SVGAnimatedLength.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedLength.h \
+	DerivedSources/WebCore/V8SVGAnimatedLengthList.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedLengthList.h \
+	DerivedSources/WebCore/V8SVGAnimatedNumber.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedNumber.h \
+	DerivedSources/WebCore/V8SVGAnimatedNumberList.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedNumberList.h \
+	DerivedSources/WebCore/V8SVGAnimatedPreserveAspectRatio.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedPreserveAspectRatio.h \
+	DerivedSources/WebCore/V8SVGAnimatedRect.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedRect.h \
+	DerivedSources/WebCore/V8SVGAnimatedString.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedString.h \
+	DerivedSources/WebCore/V8SVGAnimatedTransformList.cpp \
+	DerivedSources/WebCore/V8SVGAnimatedTransformList.h \
+	DerivedSources/WebCore/V8SVGAnimateElement.cpp \
+	DerivedSources/WebCore/V8SVGAnimateElement.h \
+	DerivedSources/WebCore/V8SVGAnimateMotionElement.cpp \
+	DerivedSources/WebCore/V8SVGAnimateMotionElement.h \
+	DerivedSources/WebCore/V8SVGAnimateTransformElement.cpp \
+	DerivedSources/WebCore/V8SVGAnimateTransformElement.h \
+	DerivedSources/WebCore/V8SVGAnimationElement.cpp \
+	DerivedSources/WebCore/V8SVGAnimationElement.h \
+	DerivedSources/WebCore/V8SVGCircleElement.cpp \
+	DerivedSources/WebCore/V8SVGCircleElement.h \
+	DerivedSources/WebCore/V8SVGClipPathElement.cpp \
+	DerivedSources/WebCore/V8SVGClipPathElement.h \
+	DerivedSources/WebCore/V8SVGColor.cpp \
+	DerivedSources/WebCore/V8SVGColor.h \
+	DerivedSources/WebCore/V8SVGComponentTransferFunctionElement.cpp \
+	DerivedSources/WebCore/V8SVGComponentTransferFunctionElement.h \
+	DerivedSources/WebCore/V8SVGCursorElement.cpp \
+	DerivedSources/WebCore/V8SVGCursorElement.h \
+	DerivedSources/WebCore/V8SVGDefsElement.cpp \
+	DerivedSources/WebCore/V8SVGDefsElement.h \
+	DerivedSources/WebCore/V8SVGDescElement.cpp \
+	DerivedSources/WebCore/V8SVGDescElement.h \
+	DerivedSources/WebCore/V8SVGDocument.cpp \
+	DerivedSources/WebCore/V8SVGDocument.h \
+	DerivedSources/WebCore/V8SVGElement.cpp \
+	DerivedSources/WebCore/V8SVGElement.h \
+	DerivedSources/WebCore/V8SVGElementInstance.cpp \
+	DerivedSources/WebCore/V8SVGElementInstance.h \
+	DerivedSources/WebCore/V8SVGElementInstanceList.cpp \
+	DerivedSources/WebCore/V8SVGElementInstanceList.h \
+	DerivedSources/WebCore/V8SVGEllipseElement.cpp \
+	DerivedSources/WebCore/V8SVGEllipseElement.h \
+	DerivedSources/WebCore/V8SVGException.cpp \
+	DerivedSources/WebCore/V8SVGException.h \
+	DerivedSources/WebCore/V8SVGExternalResourcesRequired.h \
+	DerivedSources/WebCore/V8SVGFEBlendElement.cpp \
+	DerivedSources/WebCore/V8SVGFEBlendElement.h \
+	DerivedSources/WebCore/V8SVGFEColorMatrixElement.cpp \
+	DerivedSources/WebCore/V8SVGFEColorMatrixElement.h \
+	DerivedSources/WebCore/V8SVGFEComponentTransferElement.cpp \
+	DerivedSources/WebCore/V8SVGFEComponentTransferElement.h \
+	DerivedSources/WebCore/V8SVGFECompositeElement.cpp \
+	DerivedSources/WebCore/V8SVGFECompositeElement.h \
+	DerivedSources/WebCore/V8SVGFEConvolveMatrixElement.cpp \
+	DerivedSources/WebCore/V8SVGFEConvolveMatrixElement.h \
+	DerivedSources/WebCore/V8SVGFEDiffuseLightingElement.cpp \
+	DerivedSources/WebCore/V8SVGFEDiffuseLightingElement.h \
+	DerivedSources/WebCore/V8SVGFEDisplacementMapElement.cpp \
+	DerivedSources/WebCore/V8SVGFEDisplacementMapElement.h \
+	DerivedSources/WebCore/V8SVGFEDistantLightElement.cpp \
+	DerivedSources/WebCore/V8SVGFEDistantLightElement.h \
+	DerivedSources/WebCore/V8SVGFEDropShadowElement.cpp \
+	DerivedSources/WebCore/V8SVGFEDropShadowElement.h \
+	DerivedSources/WebCore/V8SVGFEFloodElement.cpp \
+	DerivedSources/WebCore/V8SVGFEFloodElement.h \
+	DerivedSources/WebCore/V8SVGFEFuncAElement.cpp \
+	DerivedSources/WebCore/V8SVGFEFuncAElement.h \
+	DerivedSources/WebCore/V8SVGFEFuncBElement.cpp \
+	DerivedSources/WebCore/V8SVGFEFuncBElement.h \
+	DerivedSources/WebCore/V8SVGFEFuncGElement.cpp \
+	DerivedSources/WebCore/V8SVGFEFuncGElement.h \
+	DerivedSources/WebCore/V8SVGFEFuncRElement.cpp \
+	DerivedSources/WebCore/V8SVGFEFuncRElement.h \
+	DerivedSources/WebCore/V8SVGFEGaussianBlurElement.cpp \
+	DerivedSources/WebCore/V8SVGFEGaussianBlurElement.h \
+	DerivedSources/WebCore/V8SVGFEImageElement.cpp \
+	DerivedSources/WebCore/V8SVGFEImageElement.h \
+	DerivedSources/WebCore/V8SVGFEMergeElement.cpp \
+	DerivedSources/WebCore/V8SVGFEMergeElement.h \
+	DerivedSources/WebCore/V8SVGFEMergeNodeElement.cpp \
+	DerivedSources/WebCore/V8SVGFEMergeNodeElement.h \
+	DerivedSources/WebCore/V8SVGFEMorphologyElement.cpp \
+	DerivedSources/WebCore/V8SVGFEMorphologyElement.h \
+	DerivedSources/WebCore/V8SVGFEOffsetElement.cpp \
+	DerivedSources/WebCore/V8SVGFEOffsetElement.h \
+	DerivedSources/WebCore/V8SVGFEPointLightElement.cpp \
+	DerivedSources/WebCore/V8SVGFEPointLightElement.h \
+	DerivedSources/WebCore/V8SVGFESpecularLightingElement.cpp \
+	DerivedSources/WebCore/V8SVGFESpecularLightingElement.h \
+	DerivedSources/WebCore/V8SVGFESpotLightElement.cpp \
+	DerivedSources/WebCore/V8SVGFESpotLightElement.h \
+	DerivedSources/WebCore/V8SVGFETileElement.cpp \
+	DerivedSources/WebCore/V8SVGFETileElement.h \
+	DerivedSources/WebCore/V8SVGFETurbulenceElement.cpp \
+	DerivedSources/WebCore/V8SVGFETurbulenceElement.h \
+	DerivedSources/WebCore/V8SVGFilterElement.cpp \
+	DerivedSources/WebCore/V8SVGFilterElement.h \
+	DerivedSources/WebCore/V8SVGFilterPrimitiveStandardAttributes.h \
+	DerivedSources/WebCore/V8SVGFitToViewBox.h \
+	DerivedSources/WebCore/V8SVGFontElement.cpp \
+	DerivedSources/WebCore/V8SVGFontElement.h \
+	DerivedSources/WebCore/V8SVGFontFaceElement.cpp \
+	DerivedSources/WebCore/V8SVGFontFaceElement.h \
+	DerivedSources/WebCore/V8SVGFontFaceFormatElement.cpp \
+	DerivedSources/WebCore/V8SVGFontFaceFormatElement.h \
+	DerivedSources/WebCore/V8SVGFontFaceNameElement.cpp \
+	DerivedSources/WebCore/V8SVGFontFaceNameElement.h \
+	DerivedSources/WebCore/V8SVGFontFaceSrcElement.cpp \
+	DerivedSources/WebCore/V8SVGFontFaceSrcElement.h \
+	DerivedSources/WebCore/V8SVGFontFaceUriElement.cpp \
+	DerivedSources/WebCore/V8SVGFontFaceUriElement.h \
+	DerivedSources/WebCore/V8SVGForeignObjectElement.cpp \
+	DerivedSources/WebCore/V8SVGForeignObjectElement.h \
+	DerivedSources/WebCore/V8SVGGElement.cpp \
+	DerivedSources/WebCore/V8SVGGElement.h \
+	DerivedSources/WebCore/V8SVGGlyphElement.cpp \
+	DerivedSources/WebCore/V8SVGGlyphElement.h \
+	DerivedSources/WebCore/V8SVGGlyphRefElement.cpp \
+	DerivedSources/WebCore/V8SVGGlyphRefElement.h \
+	DerivedSources/WebCore/V8SVGGradientElement.cpp \
+	DerivedSources/WebCore/V8SVGGradientElement.h \
+	DerivedSources/WebCore/V8SVGHKernElement.cpp \
+	DerivedSources/WebCore/V8SVGHKernElement.h \
+	DerivedSources/WebCore/V8SVGImageElement.cpp \
+	DerivedSources/WebCore/V8SVGImageElement.h \
+	DerivedSources/WebCore/V8SVGLangSpace.h \
+	DerivedSources/WebCore/V8SVGLength.cpp \
+	DerivedSources/WebCore/V8SVGLength.h \
+	DerivedSources/WebCore/V8SVGLengthList.cpp \
+	DerivedSources/WebCore/V8SVGLengthList.h \
+	DerivedSources/WebCore/V8SVGLinearGradientElement.cpp \
+	DerivedSources/WebCore/V8SVGLinearGradientElement.h \
+	DerivedSources/WebCore/V8SVGLineElement.cpp \
+	DerivedSources/WebCore/V8SVGLineElement.h \
+	DerivedSources/WebCore/V8SVGLocatable.h \
+	DerivedSources/WebCore/V8SVGMPathElement.cpp \
+	DerivedSources/WebCore/V8SVGMPathElement.h \
+	DerivedSources/WebCore/V8SVGMarkerElement.cpp \
+	DerivedSources/WebCore/V8SVGMarkerElement.h \
+	DerivedSources/WebCore/V8SVGMaskElement.cpp \
+	DerivedSources/WebCore/V8SVGMaskElement.h \
+	DerivedSources/WebCore/V8SVGMatrix.cpp \
+	DerivedSources/WebCore/V8SVGMatrix.h \
+	DerivedSources/WebCore/V8SVGMetadataElement.cpp \
+	DerivedSources/WebCore/V8SVGMetadataElement.h \
+	DerivedSources/WebCore/V8SVGMissingGlyphElement.cpp \
+	DerivedSources/WebCore/V8SVGMissingGlyphElement.h \
+	DerivedSources/WebCore/V8SVGNumber.cpp \
+	DerivedSources/WebCore/V8SVGNumber.h \
+	DerivedSources/WebCore/V8SVGNumberList.cpp \
+	DerivedSources/WebCore/V8SVGNumberList.h \
+	DerivedSources/WebCore/V8SVGPaint.cpp \
+	DerivedSources/WebCore/V8SVGPaint.h \
+	DerivedSources/WebCore/V8SVGPathElement.cpp \
+	DerivedSources/WebCore/V8SVGPathElement.h \
+	DerivedSources/WebCore/V8SVGPathSegArcAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegArcAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegArcRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegArcRel.h \
+	DerivedSources/WebCore/V8SVGPathSegClosePath.cpp \
+	DerivedSources/WebCore/V8SVGPathSegClosePath.h \
+	DerivedSources/WebCore/V8SVGPathSeg.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicRel.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicSmoothAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicSmoothAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicSmoothRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoCubicSmoothRel.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticRel.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticSmoothAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticSmoothAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticSmoothRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegCurvetoQuadraticSmoothRel.h \
+	DerivedSources/WebCore/V8SVGPathSeg.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoHorizontalAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoHorizontalAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoHorizontalRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoHorizontalRel.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoRel.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoVerticalAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoVerticalAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegLinetoVerticalRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegLinetoVerticalRel.h \
+	DerivedSources/WebCore/V8SVGPathSegList.cpp \
+	DerivedSources/WebCore/V8SVGPathSegList.h \
+	DerivedSources/WebCore/V8SVGPathSegMovetoAbs.cpp \
+	DerivedSources/WebCore/V8SVGPathSegMovetoAbs.h \
+	DerivedSources/WebCore/V8SVGPathSegMovetoRel.cpp \
+	DerivedSources/WebCore/V8SVGPathSegMovetoRel.h \
+	DerivedSources/WebCore/V8SVGPatternElement.cpp \
+	DerivedSources/WebCore/V8SVGPatternElement.h \
+	DerivedSources/WebCore/V8SVGPoint.cpp \
+	DerivedSources/WebCore/V8SVGPoint.h \
+	DerivedSources/WebCore/V8SVGPointList.cpp \
+	DerivedSources/WebCore/V8SVGPointList.h \
+	DerivedSources/WebCore/V8SVGPolygonElement.cpp \
+	DerivedSources/WebCore/V8SVGPolygonElement.h \
+	DerivedSources/WebCore/V8SVGPolylineElement.cpp \
+	DerivedSources/WebCore/V8SVGPolylineElement.h \
+	DerivedSources/WebCore/V8SVGPreserveAspectRatio.cpp \
+	DerivedSources/WebCore/V8SVGPreserveAspectRatio.h \
+	DerivedSources/WebCore/V8SVGRadialGradientElement.cpp \
+	DerivedSources/WebCore/V8SVGRadialGradientElement.h \
+	DerivedSources/WebCore/V8SVGRect.cpp \
+	DerivedSources/WebCore/V8SVGRectElement.cpp \
+	DerivedSources/WebCore/V8SVGRectElement.h \
+	DerivedSources/WebCore/V8SVGRect.h \
+	DerivedSources/WebCore/V8SVGRenderingIntent.cpp \
+	DerivedSources/WebCore/V8SVGRenderingIntent.h \
+	DerivedSources/WebCore/V8SVGScriptElement.cpp \
+	DerivedSources/WebCore/V8SVGScriptElement.h \
+	DerivedSources/WebCore/V8SVGSetElement.cpp \
+	DerivedSources/WebCore/V8SVGSetElement.h \
+	DerivedSources/WebCore/V8SVGStopElement.cpp \
+	DerivedSources/WebCore/V8SVGStopElement.h \
+	DerivedSources/WebCore/V8SVGStringList.cpp \
+	DerivedSources/WebCore/V8SVGStringList.h \
+	DerivedSources/WebCore/V8SVGStylable.h \
+	DerivedSources/WebCore/V8SVGStyleElement.cpp \
+	DerivedSources/WebCore/V8SVGStyleElement.h \
+	DerivedSources/WebCore/V8SVGSVGElement.cpp \
+	DerivedSources/WebCore/V8SVGSVGElement.h \
+	DerivedSources/WebCore/V8SVGSwitchElement.cpp \
+	DerivedSources/WebCore/V8SVGSwitchElement.h \
+	DerivedSources/WebCore/V8SVGSymbolElement.cpp \
+	DerivedSources/WebCore/V8SVGSymbolElement.h \
+	DerivedSources/WebCore/V8SVGTests.h \
+	DerivedSources/WebCore/V8SVGTextContentElement.cpp \
+	DerivedSources/WebCore/V8SVGTextContentElement.h \
+	DerivedSources/WebCore/V8SVGTextElement.cpp \
+	DerivedSources/WebCore/V8SVGTextElement.h \
+	DerivedSources/WebCore/V8SVGTextPathElement.cpp \
+	DerivedSources/WebCore/V8SVGTextPathElement.h \
+	DerivedSources/WebCore/V8SVGTextPositioningElement.cpp \
+	DerivedSources/WebCore/V8SVGTextPositioningElement.h \
+	DerivedSources/WebCore/V8SVGTitleElement.cpp \
+	DerivedSources/WebCore/V8SVGTitleElement.h \
+	DerivedSources/WebCore/V8SVGTransformable.h \
+	DerivedSources/WebCore/V8SVGTransform.cpp \
+	DerivedSources/WebCore/V8SVGTransform.h \
+	DerivedSources/WebCore/V8SVGTransformList.cpp \
+	DerivedSources/WebCore/V8SVGTransformList.h \
+	DerivedSources/WebCore/V8SVGTRefElement.cpp \
+	DerivedSources/WebCore/V8SVGTRefElement.h \
+	DerivedSources/WebCore/V8SVGTSpanElement.cpp \
+	DerivedSources/WebCore/V8SVGTSpanElement.h \
+	DerivedSources/WebCore/V8SVGUnitTypes.cpp \
+	DerivedSources/WebCore/V8SVGUnitTypes.h \
+	DerivedSources/WebCore/V8SVGURIReference.h \
+	DerivedSources/WebCore/V8SVGUseElement.cpp \
+	DerivedSources/WebCore/V8SVGUseElement.h \
+	DerivedSources/WebCore/V8SVGViewElement.cpp \
+	DerivedSources/WebCore/V8SVGViewElement.h \
+	DerivedSources/WebCore/V8SVGViewSpec.h \
+	DerivedSources/WebCore/V8SVGVKernElement.cpp \
+	DerivedSources/WebCore/V8SVGVKernElement.h \
+	DerivedSources/WebCore/V8SVGZoomAndPan.h \
+	DerivedSources/WebCore/V8SVGZoomEvent.h \
+	DerivedSources/WebCore/V8SVGZoomEvent.cpp
+endif # END USE_V8
 endif # END ENABLE_SVG
 
 # ----
@@ -4616,6 +5083,8 @@ webcore_sources += \
 	Source/WebCore/webaudio/AudioPannerNode.cpp \
 	Source/WebCore/webaudio/AudioPannerNode.h \
 	Source/WebCore/webaudio/AudioParam.cpp \
+	Source/WebCore/webaudio/AudioParamTimeline.cpp \
+	Source/WebCore/webaudio/AudioParamTimeline.h \
 	Source/WebCore/webaudio/AudioParam.h \
 	Source/WebCore/webaudio/AudioProcessingEvent.cpp \
 	Source/WebCore/webaudio/AudioProcessingEvent.h \
@@ -4642,6 +5111,8 @@ webcore_sources += \
 	Source/WebCore/webaudio/RealtimeAnalyser.h \
 	Source/WebCore/webaudio/RealtimeAnalyserNode.cpp \
 	Source/WebCore/webaudio/RealtimeAnalyserNode.h
+
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSAudioBuffer.cpp \
 	DerivedSources/WebCore/JSAudioBuffer.h \
@@ -4683,17 +5154,82 @@ webcore_built_sources += \
 	DerivedSources/WebCore/JSLowPass2FilterNode.h \
 	DerivedSources/WebCore/JSRealtimeAnalyserNode.cpp \
 	DerivedSources/WebCore/JSRealtimeAnalyserNode.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8AudioBuffer.cpp \
+	DerivedSources/WebCore/V8AudioBuffer.h \
+	DerivedSources/WebCore/V8AudioBufferCallback.cpp \
+	DerivedSources/WebCore/V8AudioBufferCallback.h \
+	DerivedSources/WebCore/V8AudioBufferSourceNode.cpp \
+	DerivedSources/WebCore/V8AudioBufferSourceNode.h \
+	DerivedSources/WebCore/V8AudioChannelMerger.cpp \
+	DerivedSources/WebCore/V8AudioChannelMerger.h \
+	DerivedSources/WebCore/V8AudioChannelSplitter.cpp \
+	DerivedSources/WebCore/V8AudioChannelSplitter.h \
+	DerivedSources/WebCore/V8AudioContext.cpp \
+	DerivedSources/WebCore/V8AudioContext.h \
+	DerivedSources/WebCore/V8AudioDestinationNode.cpp \
+	DerivedSources/WebCore/V8AudioDestinationNode.h \
+	DerivedSources/WebCore/V8AudioGain.cpp \
+	DerivedSources/WebCore/V8AudioGain.h \
+	DerivedSources/WebCore/V8AudioGainNode.cpp \
+	DerivedSources/WebCore/V8AudioGainNode.h \
+	DerivedSources/WebCore/V8AudioListener.cpp \
+	DerivedSources/WebCore/V8AudioListener.h \
+	DerivedSources/WebCore/V8AudioNode.cpp \
+	DerivedSources/WebCore/V8AudioNode.h \
+	DerivedSources/WebCore/V8AudioPannerNode.cpp \
+	DerivedSources/WebCore/V8AudioPannerNode.h \
+	DerivedSources/WebCore/V8AudioParam.cpp \
+	DerivedSources/WebCore/V8AudioParam.h \
+	DerivedSources/WebCore/V8AudioProcessingEvent.cpp \
+	DerivedSources/WebCore/V8AudioProcessingEvent.h \
+	DerivedSources/WebCore/V8AudioSourceNode.cpp \
+	DerivedSources/WebCore/V8AudioSourceNode.h \
+	DerivedSources/WebCore/V8BiquadFilterNode.h \
+	DerivedSources/WebCore/V8BiquadFilterNode.cpp \
+	DerivedSources/WebCore/V8ConvolverNode.cpp \
+	DerivedSources/WebCore/V8ConvolverNode.h \
+	DerivedSources/WebCore/V8DelayNode.cpp \
+	DerivedSources/WebCore/V8DelayNode.h \
+	DerivedSources/WebCore/V8DynamicsCompressorNode.h \
+	DerivedSources/WebCore/V8DynamicsCompressorNode.cpp \
+	DerivedSources/WebCore/V8HighPass2FilterNode.cpp \
+	DerivedSources/WebCore/V8HighPass2FilterNode.h \
+	DerivedSources/WebCore/V8JavaScriptAudioNode.cpp \
+	DerivedSources/WebCore/V8JavaScriptAudioNode.h \
+	DerivedSources/WebCore/V8LowPass2FilterNode.cpp \
+	DerivedSources/WebCore/V8LowPass2FilterNode.h \
+	DerivedSources/WebCore/V8OfflineAudioCompletionEvent.h \
+	DerivedSources/WebCore/V8OfflineAudioCompletionEvent.cpp \
+	DerivedSources/WebCore/V8RealtimeAnalyserNode.cpp \
+	DerivedSources/WebCore/V8RealtimeAnalyserNode.h
+webcore_sources +=
+	Source/WebCore/bindings/v8/custom/V8AudioContextCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8AudioNodeCustom.cpp
+
+endif # END USE_V8
 endif
 
 # ----
 # Web Sockets Support
 # ----
 if ENABLE_WEB_SOCKETS
+if USE_JSC
 webcore_built_sources += \
 	DerivedSources/WebCore/JSCloseEvent.cpp \
 	DerivedSources/WebCore/JSCloseEvent.h \
 	DerivedSources/WebCore/JSWebSocket.cpp \
 	DerivedSources/WebCore/JSWebSocket.h
+endif # END USE_JSC
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8CloseEvent.cpp \
+	DerivedSources/WebCore/V8CloseEvent.h \
+	DerivedSources/WebCore/V8WebSocket.cpp \
+	DerivedSources/WebCore/V8WebSocket.h
+endif # END USE_V8
 endif  # END ENABLE_WEB_SOCKETS
 
 # ---
@@ -4704,6 +5240,7 @@ webcore_built_sources += \
 	DerivedSources/ANGLE/glslang.cpp \
 	DerivedSources/ANGLE/glslang_tab.cpp \
 	DerivedSources/ANGLE/glslang_tab.h
+
 webcore_sources += \
 	Source/ThirdParty/ANGLE/include/GLSLANG/ShaderLang.h \
 	Source/ThirdParty/ANGLE/src/compiler/BaseTypes.h \
@@ -4866,12 +5403,818 @@ endif  # END ENABLE_MHTML
 # RequestAnimationFrame support
 # ---
 if ENABLE_REQUEST_ANIMATION_FRAME
+if USE_JSC
 webcore_built_sources += \
     DerivedSources/WebCore/JSRequestAnimationFrameCallback.cpp \
     DerivedSources/WebCore/JSRequestAnimationFrameCallback.h
 webcore_sources += \
-    Source/WebCore/bindings/js/JSRequestAnimationFrameCallbackCustom.cpp \
+    Source/WebCore/bindings/js/JSRequestAnimationFrameCallbackCustom.cpp
+endif # END USE_JSC
+webcore_sources += \
     Source/WebCore/dom/RequestAnimationFrameCallback.h \
     Source/WebCore/dom/ScriptedAnimationController.cpp \
     Source/WebCore/dom/ScriptedAnimationController.h
 endif  # END ENABLE_REQUEST_ANIMATION_FRAME
+
+if USE_V8
+webcore_built_sources += \
+	DerivedSources/WebCore/V8AbstractWorker.cpp \
+	DerivedSources/WebCore/V8AbstractWorker.h \
+	DerivedSources/WebCore/V8ArrayBuffer.cpp \
+	DerivedSources/WebCore/V8ArrayBuffer.h \
+	DerivedSources/WebCore/V8ArrayBufferView.cpp \
+	DerivedSources/WebCore/V8ArrayBufferView.h \
+	DerivedSources/WebCore/V8ArrayBufferViewCustomScript.h \
+	DerivedSources/WebCore/V8Attr.cpp \
+	DerivedSources/WebCore/V8Attr.h \
+	DerivedSources/WebCore/V8BarInfo.cpp \
+	DerivedSources/WebCore/V8BarInfo.h \
+	DerivedSources/WebCore/V8BeforeLoadEvent.cpp \
+	DerivedSources/WebCore/V8BeforeLoadEvent.h \
+	DerivedSources/WebCore/V8Blob.cpp \
+	DerivedSources/WebCore/V8Blob.h \
+	DerivedSources/WebCore/V8CanvasGradient.cpp \
+	DerivedSources/WebCore/V8CanvasGradient.h \
+	DerivedSources/WebCore/V8CanvasPattern.cpp \
+	DerivedSources/WebCore/V8CanvasPattern.h \
+	DerivedSources/WebCore/V8CanvasPixelArray.cpp \
+	DerivedSources/WebCore/V8CanvasPixelArray.h \
+	DerivedSources/WebCore/V8CanvasRenderingContext2D.cpp \
+	DerivedSources/WebCore/V8CanvasRenderingContext2D.h \
+	DerivedSources/WebCore/V8CanvasRenderingContext.cpp \
+	DerivedSources/WebCore/V8CanvasRenderingContext.h \
+	DerivedSources/WebCore/V8CDATASection.cpp \
+	DerivedSources/WebCore/V8CDATASection.h \
+	DerivedSources/WebCore/V8CharacterData.cpp \
+	DerivedSources/WebCore/V8CharacterData.h \
+	DerivedSources/WebCore/V8ClientRect.cpp \
+	DerivedSources/WebCore/V8ClientRect.h \
+	DerivedSources/WebCore/V8ClientRectList.cpp \
+	DerivedSources/WebCore/V8ClientRectList.h \
+	DerivedSources/WebCore/V8Clipboard.cpp \
+	DerivedSources/WebCore/V8Clipboard.h \
+	DerivedSources/WebCore/V8Comment.cpp \
+	DerivedSources/WebCore/V8Comment.h \
+	DerivedSources/WebCore/V8CompositionEvent.cpp \
+	DerivedSources/WebCore/V8CompositionEvent.h \
+	DerivedSources/WebCore/V8Console.cpp \
+	DerivedSources/WebCore/V8Console.h \
+	DerivedSources/WebCore/V8Coordinates.cpp \
+	DerivedSources/WebCore/V8Coordinates.h \
+	DerivedSources/WebCore/V8Counter.cpp \
+	DerivedSources/WebCore/V8Counter.h \
+	DerivedSources/WebCore/V8Crypto.cpp \
+	DerivedSources/WebCore/V8Crypto.h \
+	DerivedSources/WebCore/V8CSSCharsetRule.cpp \
+	DerivedSources/WebCore/V8CSSCharsetRule.h \
+	DerivedSources/WebCore/V8CSSFontFaceRule.cpp \
+	DerivedSources/WebCore/V8CSSFontFaceRule.h \
+	DerivedSources/WebCore/V8CSSImportRule.cpp \
+	DerivedSources/WebCore/V8CSSImportRule.h \
+	DerivedSources/WebCore/V8CSSMediaRule.cpp \
+	DerivedSources/WebCore/V8CSSMediaRule.h \
+	DerivedSources/WebCore/V8CSSPageRule.cpp \
+	DerivedSources/WebCore/V8CSSPageRule.h \
+	DerivedSources/WebCore/V8CSSPrimitiveValue.cpp \
+	DerivedSources/WebCore/V8CSSPrimitiveValue.h \
+	DerivedSources/WebCore/V8CSSRule.cpp \
+	DerivedSources/WebCore/V8CSSRule.h \
+	DerivedSources/WebCore/V8CSSRuleList.cpp \
+	DerivedSources/WebCore/V8CSSRuleList.h \
+	DerivedSources/WebCore/V8CSSStyleDeclaration.cpp \
+	DerivedSources/WebCore/V8CSSStyleDeclaration.h \
+	DerivedSources/WebCore/V8CSSStyleRule.cpp \
+	DerivedSources/WebCore/V8CSSStyleRule.h \
+	DerivedSources/WebCore/V8CSSStyleSheet.cpp \
+	DerivedSources/WebCore/V8CSSStyleSheet.h \
+	DerivedSources/WebCore/V8CSSValue.cpp \
+	DerivedSources/WebCore/V8CSSValue.h \
+	DerivedSources/WebCore/V8CSSValueList.cpp \
+	DerivedSources/WebCore/V8CSSValueList.h \
+	DerivedSources/WebCore/V8CustomEvent.cpp \
+	DerivedSources/WebCore/V8CustomEvent.h \
+	DerivedSources/WebCore/V8DataTransferItems.h \
+	DerivedSources/WebCore/V8DataTransferItems.cpp \
+	DerivedSources/WebCore/V8DataView.cpp \
+	DerivedSources/WebCore/V8DataView.h \
+	DerivedSources/WebCore/V8DedicatedWorkerContext.cpp \
+	DerivedSources/WebCore/V8DedicatedWorkerContext.h \
+	DerivedSources/WebCore/V8DeviceMotionEvent.cpp \
+	DerivedSources/WebCore/V8DeviceMotionEvent.h \
+	DerivedSources/WebCore/V8DeviceOrientationEvent.cpp \
+	DerivedSources/WebCore/V8DeviceOrientationEvent.h \
+	DerivedSources/WebCore/V8Document.cpp \
+	DerivedSources/WebCore/V8DocumentFragment.cpp \
+	DerivedSources/WebCore/V8DocumentFragment.h \
+	DerivedSources/WebCore/V8Document.h \
+	DerivedSources/WebCore/V8DocumentType.cpp \
+	DerivedSources/WebCore/V8DocumentType.h \
+	DerivedSources/WebCore/V8DOMApplicationCache.cpp \
+	DerivedSources/WebCore/V8DOMApplicationCache.h \
+	DerivedSources/WebCore/V8DOMCoreException.cpp \
+	DerivedSources/WebCore/V8DOMCoreException.h \
+	DerivedSources/WebCore/V8DOMFormData.cpp \
+	DerivedSources/WebCore/V8DOMFormData.h \
+	DerivedSources/WebCore/V8DOMImplementation.cpp \
+	DerivedSources/WebCore/V8DOMImplementation.h \
+	DerivedSources/WebCore/V8DOMMimeTypeArray.cpp \
+	DerivedSources/WebCore/V8DOMMimeTypeArray.h \
+	DerivedSources/WebCore/V8DOMMimeType.cpp \
+	DerivedSources/WebCore/V8DOMMimeType.h \
+	DerivedSources/WebCore/V8DOMParser.cpp \
+	DerivedSources/WebCore/V8DOMParser.h \
+	DerivedSources/WebCore/V8DOMPluginArray.cpp \
+	DerivedSources/WebCore/V8DOMPluginArray.h \
+	DerivedSources/WebCore/V8DOMPlugin.cpp \
+	DerivedSources/WebCore/V8DOMPlugin.h \
+	DerivedSources/WebCore/V8DOMSelection.cpp \
+	DerivedSources/WebCore/V8DOMSelection.h \
+	DerivedSources/WebCore/V8DOMSettableTokenList.cpp \
+	DerivedSources/WebCore/V8DOMSettableTokenList.h \
+	DerivedSources/WebCore/V8DOMStringList.cpp \
+	DerivedSources/WebCore/V8DOMStringList.h \
+	DerivedSources/WebCore/V8DOMStringMap.cpp \
+	DerivedSources/WebCore/V8DOMStringMap.h \
+	DerivedSources/WebCore/V8DOMTokenList.cpp \
+	DerivedSources/WebCore/V8DOMTokenList.h \
+	DerivedSources/WebCore/V8DOMURL.cpp \
+	DerivedSources/WebCore/V8DOMURL.h \
+	DerivedSources/WebCore/V8DOMWindow.cpp \
+	DerivedSources/WebCore/V8DOMWindow.h \
+	DerivedSources/WebCore/V8Element.cpp \
+	DerivedSources/WebCore/V8Element.h \
+	DerivedSources/WebCore/V8Entity.cpp \
+	DerivedSources/WebCore/V8Entity.h \
+	DerivedSources/WebCore/V8EntityReference.cpp \
+	DerivedSources/WebCore/V8EntityReference.h \
+	DerivedSources/WebCore/V8ErrorEvent.cpp \
+	DerivedSources/WebCore/V8ErrorEvent.h \
+	DerivedSources/WebCore/V8Event.cpp \
+	DerivedSources/WebCore/V8EventException.cpp \
+	DerivedSources/WebCore/V8EventException.h \
+	DerivedSources/WebCore/V8Event.h \
+	DerivedSources/WebCore/V8EventSource.cpp \
+	DerivedSources/WebCore/V8EventSource.h \
+	DerivedSources/WebCore/V8File.cpp \
+	DerivedSources/WebCore/V8FileError.cpp \
+	DerivedSources/WebCore/V8FileError.h \
+	DerivedSources/WebCore/V8File.h \
+	DerivedSources/WebCore/V8FileException.cpp \
+	DerivedSources/WebCore/V8FileException.h \
+	DerivedSources/WebCore/V8FileList.cpp \
+	DerivedSources/WebCore/V8FileList.h \
+	DerivedSources/WebCore/V8FileReader.cpp \
+	DerivedSources/WebCore/V8FileReader.h \
+	DerivedSources/WebCore/V8FileReaderSync.cpp \
+	DerivedSources/WebCore/V8FileReaderSync.h \
+	DerivedSources/WebCore/V8Float32Array.cpp \
+	DerivedSources/WebCore/V8Float32Array.h \
+	DerivedSources/WebCore/V8Float64Array.cpp \
+	DerivedSources/WebCore/V8Float64Array.h \
+	DerivedSources/WebCore/V8Geolocation.cpp \
+	DerivedSources/WebCore/V8Geolocation.h \
+	DerivedSources/WebCore/V8Geoposition.cpp \
+	DerivedSources/WebCore/V8Geoposition.h \
+	DerivedSources/WebCore/V8HashChangeEvent.cpp \
+	DerivedSources/WebCore/V8HashChangeEvent.h \
+	DerivedSources/WebCore/V8History.cpp \
+	DerivedSources/WebCore/V8History.h \
+	DerivedSources/WebCore/V8HTMLAllCollection.cpp \
+	DerivedSources/WebCore/V8HTMLAllCollection.h \
+	DerivedSources/WebCore/V8HTMLAnchorElement.cpp \
+	DerivedSources/WebCore/V8HTMLAnchorElement.h \
+	DerivedSources/WebCore/V8HTMLAppletElement.cpp \
+	DerivedSources/WebCore/V8HTMLAppletElement.h \
+	DerivedSources/WebCore/V8HTMLAreaElement.cpp \
+	DerivedSources/WebCore/V8HTMLAreaElement.h \
+	DerivedSources/WebCore/V8HTMLAudioElement.cpp \
+	DerivedSources/WebCore/V8HTMLAudioElement.h \
+	DerivedSources/WebCore/V8HTMLBaseElement.cpp \
+	DerivedSources/WebCore/V8HTMLBaseElement.h \
+	DerivedSources/WebCore/V8HTMLBaseFontElement.cpp \
+	DerivedSources/WebCore/V8HTMLBaseFontElement.h \
+	DerivedSources/WebCore/V8HTMLBodyElement.cpp \
+	DerivedSources/WebCore/V8HTMLBodyElement.h \
+	DerivedSources/WebCore/V8HTMLBRElement.cpp \
+	DerivedSources/WebCore/V8HTMLBRElement.h \
+	DerivedSources/WebCore/V8HTMLButtonElement.cpp \
+	DerivedSources/WebCore/V8HTMLButtonElement.h \
+	DerivedSources/WebCore/V8HTMLCanvasElement.cpp \
+	DerivedSources/WebCore/V8HTMLCanvasElement.h \
+	DerivedSources/WebCore/V8HTMLCollection.cpp \
+	DerivedSources/WebCore/V8HTMLCollection.h \
+	DerivedSources/WebCore/V8HTMLDataListElement.cpp \
+	DerivedSources/WebCore/V8HTMLDataListElement.h \
+	DerivedSources/WebCore/V8HTMLDetailsElement.cpp \
+	DerivedSources/WebCore/V8HTMLDetailsElement.h \
+	DerivedSources/WebCore/V8HTMLDirectoryElement.cpp \
+	DerivedSources/WebCore/V8HTMLDirectoryElement.h \
+	DerivedSources/WebCore/V8HTMLDivElement.cpp \
+	DerivedSources/WebCore/V8HTMLDivElement.h \
+	DerivedSources/WebCore/V8HTMLDListElement.cpp \
+	DerivedSources/WebCore/V8HTMLDListElement.h \
+	DerivedSources/WebCore/V8HTMLDocument.cpp \
+	DerivedSources/WebCore/V8HTMLDocument.h \
+	DerivedSources/WebCore/V8HTMLElement.cpp \
+	DerivedSources/WebCore/V8HTMLElement.h \
+	DerivedSources/WebCore/V8HTMLElementWrapperFactory.cpp \
+	DerivedSources/WebCore/V8HTMLElementWrapperFactory.h \
+	DerivedSources/WebCore/V8HTMLEmbedElement.cpp \
+	DerivedSources/WebCore/V8HTMLEmbedElement.h \
+	DerivedSources/WebCore/V8HTMLFieldSetElement.cpp \
+	DerivedSources/WebCore/V8HTMLFieldSetElement.h \
+	DerivedSources/WebCore/V8HTMLFontElement.cpp \
+	DerivedSources/WebCore/V8HTMLFontElement.h \
+	DerivedSources/WebCore/V8HTMLFormElement.cpp \
+	DerivedSources/WebCore/V8HTMLFormElement.h \
+	DerivedSources/WebCore/V8HTMLFrameElement.cpp \
+	DerivedSources/WebCore/V8HTMLFrameElement.h \
+	DerivedSources/WebCore/V8HTMLFrameSetElement.cpp \
+	DerivedSources/WebCore/V8HTMLFrameSetElement.h \
+	DerivedSources/WebCore/V8HTMLHeadElement.cpp \
+	DerivedSources/WebCore/V8HTMLHeadElement.h \
+	DerivedSources/WebCore/V8HTMLHeadingElement.cpp \
+	DerivedSources/WebCore/V8HTMLHeadingElement.h \
+	DerivedSources/WebCore/V8HTMLHRElement.cpp \
+	DerivedSources/WebCore/V8HTMLHRElement.h \
+	DerivedSources/WebCore/V8HTMLHtmlElement.cpp \
+	DerivedSources/WebCore/V8HTMLHtmlElement.h \
+	DerivedSources/WebCore/V8HTMLIFrameElement.cpp \
+	DerivedSources/WebCore/V8HTMLIFrameElement.h \
+	DerivedSources/WebCore/V8HTMLImageElement.cpp \
+	DerivedSources/WebCore/V8HTMLImageElement.h \
+	DerivedSources/WebCore/V8HTMLInputElement.cpp \
+	DerivedSources/WebCore/V8HTMLInputElement.h \
+	DerivedSources/WebCore/V8HTMLIsIndexElement.cpp \
+	DerivedSources/WebCore/V8HTMLIsIndexElement.h \
+	DerivedSources/WebCore/V8HTMLKeygenElement.cpp \
+	DerivedSources/WebCore/V8HTMLKeygenElement.h \
+	DerivedSources/WebCore/V8HTMLLabelElement.cpp \
+	DerivedSources/WebCore/V8HTMLLabelElement.h \
+	DerivedSources/WebCore/V8HTMLLegendElement.cpp \
+	DerivedSources/WebCore/V8HTMLLegendElement.h \
+	DerivedSources/WebCore/V8HTMLLIElement.cpp \
+	DerivedSources/WebCore/V8HTMLLIElement.h \
+	DerivedSources/WebCore/V8HTMLLinkElement.cpp \
+	DerivedSources/WebCore/V8HTMLLinkElement.h \
+	DerivedSources/WebCore/V8HTMLMapElement.cpp \
+	DerivedSources/WebCore/V8HTMLMapElement.h \
+	DerivedSources/WebCore/V8HTMLMarqueeElement.cpp \
+	DerivedSources/WebCore/V8HTMLMarqueeElement.h \
+	DerivedSources/WebCore/V8HTMLMediaElement.cpp \
+	DerivedSources/WebCore/V8HTMLMediaElement.h \
+	DerivedSources/WebCore/V8HTMLMenuElement.cpp \
+	DerivedSources/WebCore/V8HTMLMenuElement.h \
+	DerivedSources/WebCore/V8HTMLMetaElement.cpp \
+	DerivedSources/WebCore/V8HTMLMetaElement.h \
+	DerivedSources/WebCore/V8HTMLMeterElement.cpp \
+	DerivedSources/WebCore/V8HTMLMeterElement.h \
+	DerivedSources/WebCore/V8HTMLModElement.cpp \
+	DerivedSources/WebCore/V8HTMLModElement.h \
+	DerivedSources/WebCore/V8HTMLObjectElement.cpp \
+	DerivedSources/WebCore/V8HTMLObjectElement.h \
+	DerivedSources/WebCore/V8HTMLOListElement.cpp \
+	DerivedSources/WebCore/V8HTMLOListElement.h \
+	DerivedSources/WebCore/V8HTMLOptGroupElement.cpp \
+	DerivedSources/WebCore/V8HTMLOptGroupElement.h \
+	DerivedSources/WebCore/V8HTMLOptionElement.cpp \
+	DerivedSources/WebCore/V8HTMLOptionElement.h \
+	DerivedSources/WebCore/V8HTMLOptionsCollection.cpp \
+	DerivedSources/WebCore/V8HTMLOptionsCollection.h \
+	DerivedSources/WebCore/V8HTMLOutputElement.cpp \
+	DerivedSources/WebCore/V8HTMLOutputElement.h \
+	DerivedSources/WebCore/V8HTMLParagraphElement.cpp \
+	DerivedSources/WebCore/V8HTMLParagraphElement.h \
+	DerivedSources/WebCore/V8HTMLParamElement.cpp \
+	DerivedSources/WebCore/V8HTMLParamElement.h \
+	DerivedSources/WebCore/V8HTMLPreElement.cpp \
+	DerivedSources/WebCore/V8HTMLPreElement.h \
+	DerivedSources/WebCore/V8HTMLProgressElement.cpp \
+	DerivedSources/WebCore/V8HTMLProgressElement.h \
+	DerivedSources/WebCore/V8HTMLQuoteElement.cpp \
+	DerivedSources/WebCore/V8HTMLQuoteElement.h \
+	DerivedSources/WebCore/V8HTMLScriptElement.cpp \
+	DerivedSources/WebCore/V8HTMLScriptElement.h \
+	DerivedSources/WebCore/V8HTMLSelectElement.cpp \
+	DerivedSources/WebCore/V8HTMLSelectElement.h \
+	DerivedSources/WebCore/V8HTMLSourceElement.cpp \
+	DerivedSources/WebCore/V8HTMLSourceElement.h \
+	DerivedSources/WebCore/V8HTMLSpanElement.cpp \
+	DerivedSources/WebCore/V8HTMLSpanElement.h \
+	DerivedSources/WebCore/V8HTMLStyleElement.cpp \
+	DerivedSources/WebCore/V8HTMLStyleElement.h \
+	DerivedSources/WebCore/V8HTMLTableCaptionElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableCaptionElement.h \
+	DerivedSources/WebCore/V8HTMLTableCellElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableCellElement.h \
+	DerivedSources/WebCore/V8HTMLTableColElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableColElement.h \
+	DerivedSources/WebCore/V8HTMLTableElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableElement.h \
+	DerivedSources/WebCore/V8HTMLTableRowElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableRowElement.h \
+	DerivedSources/WebCore/V8HTMLTableSectionElement.cpp \
+	DerivedSources/WebCore/V8HTMLTableSectionElement.h \
+	DerivedSources/WebCore/V8HTMLTextAreaElement.cpp \
+	DerivedSources/WebCore/V8HTMLTextAreaElement.h \
+	DerivedSources/WebCore/V8HTMLTitleElement.cpp \
+	DerivedSources/WebCore/V8HTMLTitleElement.h \
+	DerivedSources/WebCore/V8HTMLTrackElement.cpp \
+	DerivedSources/WebCore/V8HTMLTrackElement.h \
+	DerivedSources/WebCore/V8HTMLUnknownElement.cpp \
+	DerivedSources/WebCore/V8HTMLUnknownElement.h \
+	DerivedSources/WebCore/V8HTMLUListElement.cpp \
+	DerivedSources/WebCore/V8HTMLUListElement.h \
+	DerivedSources/WebCore/V8HTMLVideoElement.cpp \
+	DerivedSources/WebCore/V8HTMLVideoElement.h \
+	DerivedSources/WebCore/V8ImageData.cpp \
+	DerivedSources/WebCore/V8ImageData.h \
+	DerivedSources/WebCore/V8InjectedScriptHost.cpp \
+	DerivedSources/WebCore/V8InjectedScriptHost.h \
+	DerivedSources/WebCore/V8InspectorFrontendHost.cpp \
+	DerivedSources/WebCore/V8InspectorFrontendHost.h \
+	DerivedSources/WebCore/V8Int16Array.cpp \
+	DerivedSources/WebCore/V8Int16Array.h \
+	DerivedSources/WebCore/V8Int32Array.cpp \
+	DerivedSources/WebCore/V8Int32Array.h \
+	DerivedSources/WebCore/V8Int8Array.cpp \
+	DerivedSources/WebCore/V8Int8Array.h \
+	DerivedSources/WebCore/V8JavaScriptCallFrame.cpp \
+	DerivedSources/WebCore/V8JavaScriptCallFrame.h \
+	DerivedSources/WebCore/V8KeyboardEvent.cpp \
+	DerivedSources/WebCore/V8KeyboardEvent.h \
+	DerivedSources/WebCore/V8LocalMediaStream.cpp \
+	DerivedSources/WebCore/V8LocalMediaStream.h \
+	DerivedSources/WebCore/V8Location.cpp \
+	DerivedSources/WebCore/V8Location.h \
+	DerivedSources/WebCore/V8MediaError.cpp \
+	DerivedSources/WebCore/V8MediaError.h \
+	DerivedSources/WebCore/V8MediaList.cpp \
+	DerivedSources/WebCore/V8MediaList.h \
+	DerivedSources/WebCore/V8MediaStream.cpp \
+	DerivedSources/WebCore/V8MediaStream.h \
+	DerivedSources/WebCore/V8MediaStreamEvent.cpp \
+	DerivedSources/WebCore/V8MediaStreamEvent.h \
+	DerivedSources/WebCore/V8MediaStreamList.cpp \
+	DerivedSources/WebCore/V8MediaStreamList.h \
+	DerivedSources/WebCore/V8MediaStreamTrack.cpp \
+	DerivedSources/WebCore/V8MediaStreamTrack.h \
+	DerivedSources/WebCore/V8MediaStreamTrackList.cpp \
+	DerivedSources/WebCore/V8MediaStreamTrackList.h \
+	DerivedSources/WebCore/V8MediaQueryList.cpp \
+	DerivedSources/WebCore/V8MediaQueryList.h \
+	DerivedSources/WebCore/V8MemoryInfo.cpp \
+	DerivedSources/WebCore/V8MemoryInfo.h \
+	DerivedSources/WebCore/V8MediaElementAudioSourceNode.h \
+	DerivedSources/WebCore/V8MediaElementAudioSourceNode.cpp \
+	DerivedSources/WebCore/V8MessageChannel.cpp \
+	DerivedSources/WebCore/V8MessageChannel.h \
+	DerivedSources/WebCore/V8MessageEvent.cpp \
+	DerivedSources/WebCore/V8MessageEvent.h \
+	DerivedSources/WebCore/V8MessagePort.cpp \
+	DerivedSources/WebCore/V8MessagePort.h \
+	DerivedSources/WebCore/V8MouseEvent.cpp \
+	DerivedSources/WebCore/V8MouseEvent.h \
+	DerivedSources/WebCore/V8MutationEvent.cpp \
+	DerivedSources/WebCore/V8MutationEvent.h \
+	DerivedSources/WebCore/V8NamedNodeMap.cpp \
+	DerivedSources/WebCore/V8NamedNodeMap.h \
+	DerivedSources/WebCore/V8PerformanceNavigation.cpp \
+	DerivedSources/WebCore/V8PerformanceNavigation.h \
+	DerivedSources/WebCore/V8Navigator.cpp \
+	DerivedSources/WebCore/V8Navigator.h \
+	DerivedSources/WebCore/V8NavigatorUserMediaError.cpp \
+	DerivedSources/WebCore/V8NavigatorUserMediaError.h \
+	DerivedSources/WebCore/V8NavigatorUserMediaErrorCallback.cpp \
+	DerivedSources/WebCore/V8NavigatorUserMediaErrorCallback.h \
+	DerivedSources/WebCore/V8NavigatorUserMediaSuccessCallback.cpp \
+	DerivedSources/WebCore/V8NavigatorUserMediaSuccessCallback.h \
+	DerivedSources/WebCore/V8Node.cpp \
+	DerivedSources/WebCore/V8NodeFilter.cpp \
+	DerivedSources/WebCore/V8NodeFilter.h \
+	DerivedSources/WebCore/V8Node.h \
+	DerivedSources/WebCore/V8NodeIterator.cpp \
+	DerivedSources/WebCore/V8NodeIterator.h \
+	DerivedSources/WebCore/V8NodeList.cpp \
+	DerivedSources/WebCore/V8NodeList.h \
+	DerivedSources/WebCore/V8Notation.cpp \
+	DerivedSources/WebCore/V8Notation.h \
+	DerivedSources/WebCore/V8NotificationCenter.cpp \
+	DerivedSources/WebCore/V8NotificationCenter.h \
+	DerivedSources/WebCore/V8Notification.cpp \
+	DerivedSources/WebCore/V8Notification.h \
+	DerivedSources/WebCore/V8OESStandardDerivatives.cpp \
+	DerivedSources/WebCore/V8OESStandardDerivatives.h \
+	DerivedSources/WebCore/V8OESTextureFloat.cpp \
+	DerivedSources/WebCore/V8OESTextureFloat.h \
+	DerivedSources/WebCore/V8OESVertexArrayObject.cpp \
+	DerivedSources/WebCore/V8OESVertexArrayObject.h \
+	DerivedSources/WebCore/V8OperationNotAllowedException.cpp \
+	DerivedSources/WebCore/V8OperationNotAllowedException.h \
+	DerivedSources/WebCore/V8OverflowEvent.cpp \
+	DerivedSources/WebCore/V8OverflowEvent.h \
+	DerivedSources/WebCore/V8PageTransitionEvent.cpp \
+	DerivedSources/WebCore/V8PageTransitionEvent.h \
+	DerivedSources/WebCore/V8Performance.cpp \
+	DerivedSources/WebCore/V8Performance.h \
+	DerivedSources/WebCore/V8PeerConnection.cpp \
+	DerivedSources/WebCore/V8PeerConnection.h \
+	DerivedSources/WebCore/V8PopStateEvent.cpp \
+	DerivedSources/WebCore/V8PopStateEvent.h \
+	DerivedSources/WebCore/V8PositionCallback.cpp \
+	DerivedSources/WebCore/V8PositionCallback.h \
+	DerivedSources/WebCore/V8PositionError.cpp \
+	DerivedSources/WebCore/V8PositionError.h \
+	DerivedSources/WebCore/V8PositionErrorCallback.cpp \
+	DerivedSources/WebCore/V8PositionErrorCallback.h \
+	DerivedSources/WebCore/V8ProcessingInstruction.cpp \
+	DerivedSources/WebCore/V8ProcessingInstruction.h \
+	DerivedSources/WebCore/V8ProgressEvent.cpp \
+	DerivedSources/WebCore/V8ProgressEvent.h \
+	DerivedSources/WebCore/V8Range.cpp \
+	DerivedSources/WebCore/V8RangeException.cpp \
+	DerivedSources/WebCore/V8RangeException.h \
+	DerivedSources/WebCore/V8Range.h \
+	DerivedSources/WebCore/V8Rect.cpp \
+	DerivedSources/WebCore/V8Rect.h \
+	DerivedSources/WebCore/V8RGBColor.cpp \
+	DerivedSources/WebCore/V8RGBColor.h \
+	DerivedSources/WebCore/V8Screen.cpp \
+	DerivedSources/WebCore/V8Screen.h \
+	DerivedSources/WebCore/V8ScriptProfile.cpp \
+	DerivedSources/WebCore/V8ScriptProfile.h \
+	DerivedSources/WebCore/V8ScriptProfileNode.cpp \
+	DerivedSources/WebCore/V8ScriptProfileNode.h \
+	DerivedSources/WebCore/V8SharedWorkerContext.cpp \
+	DerivedSources/WebCore/V8SharedWorkerContext.h \
+	DerivedSources/WebCore/V8SharedWorker.cpp \
+	DerivedSources/WebCore/V8SharedWorker.h \
+	DerivedSources/WebCore/V8SignalingCallback.cpp \
+	DerivedSources/WebCore/V8SignalingCallback.h \
+	DerivedSources/WebCore/V8SpeechInputEvent.cpp \
+	DerivedSources/WebCore/V8SpeechInputEvent.h \
+	DerivedSources/WebCore/V8SpeechInputResult.cpp \
+	DerivedSources/WebCore/V8SpeechInputResult.h \
+	DerivedSources/WebCore/V8SpeechInputResultList.cpp \
+	DerivedSources/WebCore/V8SpeechInputResultList.h \
+	DerivedSources/WebCore/V8SQLException.h \
+	DerivedSources/WebCore/V8SQLResultSetRowList.h \
+	DerivedSources/WebCore/V8SQLTransaction.h \
+	DerivedSources/WebCore/V8SQLTransactionSync.h \
+	DerivedSources/WebCore/V8Storage.h \
+	DerivedSources/WebCore/V8StorageInfo.h \
+	DerivedSources/WebCore/V8StorageInfoErrorCallback.h \
+	DerivedSources/WebCore/V8StorageInfoQuotaCallback.h \
+	DerivedSources/WebCore/V8StorageInfoUsageCallback.h \
+	DerivedSources/WebCore/V8StyleMedia.cpp \
+	DerivedSources/WebCore/V8StyleMedia.h \
+	DerivedSources/WebCore/V8StyleSheet.cpp \
+	DerivedSources/WebCore/V8StyleSheet.h \
+	DerivedSources/WebCore/V8StyleSheetList.cpp \
+	DerivedSources/WebCore/V8StyleSheetList.h \
+	DerivedSources/WebCore/V8SVGElementWrapperFactory.cpp \
+	DerivedSources/WebCore/V8Text.cpp \
+	DerivedSources/WebCore/V8TextEvent.cpp \
+	DerivedSources/WebCore/V8TextEvent.h \
+	DerivedSources/WebCore/V8Text.h \
+	DerivedSources/WebCore/V8TextMetrics.cpp \
+	DerivedSources/WebCore/V8TextMetrics.h \
+	DerivedSources/WebCore/V8TimeRanges.cpp \
+	DerivedSources/WebCore/V8TimeRanges.h \
+	DerivedSources/WebCore/V8PerformanceTiming.cpp \
+	DerivedSources/WebCore/V8PerformanceTiming.h \
+	DerivedSources/WebCore/V8Touch.cpp \
+	DerivedSources/WebCore/V8TouchEvent.cpp \
+	DerivedSources/WebCore/V8TouchEvent.h \
+	DerivedSources/WebCore/V8Touch.h \
+	DerivedSources/WebCore/V8TouchList.cpp \
+	DerivedSources/WebCore/V8TouchList.h \
+	DerivedSources/WebCore/V8TreeWalker.cpp \
+	DerivedSources/WebCore/V8TreeWalker.h \
+	DerivedSources/WebCore/V8UIEvent.cpp \
+	DerivedSources/WebCore/V8UIEvent.h \
+	DerivedSources/WebCore/V8Uint16Array.cpp \
+	DerivedSources/WebCore/V8Uint16Array.h \
+	DerivedSources/WebCore/V8Uint32Array.cpp \
+	DerivedSources/WebCore/V8Uint32Array.h \
+	DerivedSources/WebCore/V8Uint8Array.cpp \
+	DerivedSources/WebCore/V8Uint8Array.h \
+	DerivedSources/WebCore/V8ValidityState.cpp \
+	DerivedSources/WebCore/V8ValidityState.h \
+	DerivedSources/WebCore/V8VoidCallback.cpp \
+	DerivedSources/WebCore/V8VoidCallback.h \
+	DerivedSources/WebCore/V8WaveShaperNode.h \
+	DerivedSources/WebCore/V8WaveShaperNode.cpp \
+	DerivedSources/WebCore/V8WebGLActiveInfo.cpp \
+	DerivedSources/WebCore/V8WebGLActiveInfo.h \
+	DerivedSources/WebCore/V8WebGLBuffer.cpp \
+	DerivedSources/WebCore/V8WebGLBuffer.h \
+	DerivedSources/WebCore/V8WebGLContextAttributes.cpp \
+	DerivedSources/WebCore/V8WebGLContextAttributes.h \
+	DerivedSources/WebCore/V8WebGLContextEvent.cpp \
+	DerivedSources/WebCore/V8WebGLContextEvent.h \
+	DerivedSources/WebCore/V8WebGLFramebuffer.cpp \
+	DerivedSources/WebCore/V8WebGLFramebuffer.h \
+	DerivedSources/WebCore/V8WebGLProgram.cpp \
+	DerivedSources/WebCore/V8WebGLProgram.h \
+	DerivedSources/WebCore/V8WebGLRenderbuffer.cpp \
+	DerivedSources/WebCore/V8WebGLRenderbuffer.h \
+	DerivedSources/WebCore/V8WebGLRenderingContext.cpp \
+	DerivedSources/WebCore/V8WebGLRenderingContext.h \
+	DerivedSources/WebCore/V8WebGLShader.cpp \
+	DerivedSources/WebCore/V8WebGLShader.h \
+	DerivedSources/WebCore/V8WebGLTexture.cpp \
+	DerivedSources/WebCore/V8WebGLTexture.h \
+	DerivedSources/WebCore/V8WebGLUniformLocation.cpp \
+	DerivedSources/WebCore/V8WebGLUniformLocation.h \
+	DerivedSources/WebCore/V8WebGLVertexArrayObjectOES.cpp \
+	DerivedSources/WebCore/V8WebGLVertexArrayObjectOES.h \
+	DerivedSources/WebCore/V8WebKitAnimation.cpp \
+	DerivedSources/WebCore/V8WebKitAnimation.h \
+	DerivedSources/WebCore/V8WebKitAnimationList.h \
+	DerivedSources/WebCore/V8WebKitAnimationEvent.cpp \
+	DerivedSources/WebCore/V8WebKitAnimationEvent.h \
+	DerivedSources/WebCore/V8WebKitAnimationList.cpp \
+	DerivedSources/WebCore/V8WebKitBlobBuilder.cpp \
+	DerivedSources/WebCore/V8WebKitBlobBuilder.h \
+	DerivedSources/WebCore/V8WebKitCSSKeyframeRule.cpp \
+	DerivedSources/WebCore/V8WebKitCSSKeyframeRule.h \
+	DerivedSources/WebCore/V8WebKitCSSKeyframesRule.cpp \
+	DerivedSources/WebCore/V8WebKitCSSKeyframesRule.h \
+	DerivedSources/WebCore/V8WebKitCSSMatrix.cpp \
+	DerivedSources/WebCore/V8WebKitCSSMatrix.h \
+	DerivedSources/WebCore/V8WebKitCSSTransformValue.cpp \
+	DerivedSources/WebCore/V8WebKitCSSTransformValue.h \
+	DerivedSources/WebCore/V8WebKitLoseContext.cpp \
+	DerivedSources/WebCore/V8WebKitLoseContext.h \
+	DerivedSources/WebCore/V8WebKitPoint.cpp \
+	DerivedSources/WebCore/V8WebKitPoint.h \
+	DerivedSources/WebCore/V8WebKitTransitionEvent.cpp \
+	DerivedSources/WebCore/V8WebKitTransitionEvent.h \
+	DerivedSources/WebCore/V8WheelEvent.cpp \
+	DerivedSources/WebCore/V8WheelEvent.h \
+	DerivedSources/WebCore/V8WorkerContext.cpp \
+	DerivedSources/WebCore/V8WorkerContext.h \
+	DerivedSources/WebCore/V8Worker.cpp \
+	DerivedSources/WebCore/V8Worker.h \
+	DerivedSources/WebCore/V8WorkerLocation.cpp \
+	DerivedSources/WebCore/V8WorkerLocation.h \
+	DerivedSources/WebCore/V8WorkerNavigator.cpp \
+	DerivedSources/WebCore/V8WorkerNavigator.h \
+	DerivedSources/WebCore/V8XMLHttpRequest.cpp \
+	DerivedSources/WebCore/V8XMLHttpRequestException.cpp \
+	DerivedSources/WebCore/V8XMLHttpRequestException.h \
+	DerivedSources/WebCore/V8XMLHttpRequest.h \
+	DerivedSources/WebCore/V8XMLHttpRequestProgressEvent.cpp \
+	DerivedSources/WebCore/V8XMLHttpRequestProgressEvent.h \
+	DerivedSources/WebCore/V8XMLHttpRequestUpload.cpp \
+	DerivedSources/WebCore/V8XMLHttpRequestUpload.h \
+	DerivedSources/WebCore/V8XMLSerializer.cpp \
+	DerivedSources/WebCore/V8XMLSerializer.h \
+	DerivedSources/WebCore/V8XSLTProcessor.cpp \
+	DerivedSources/WebCore/V8XSLTProcessor.h
+endif # END USE_V8
+
+
+if USE_V8
+webcore_sources += \
+	Source/WebCore/bindings/v8/DOMData.cpp \
+	Source/WebCore/bindings/v8/DOMData.h \
+	Source/WebCore/bindings/v8/DOMDataStore.cpp \
+	Source/WebCore/bindings/v8/DOMDataStore.h \
+	Source/WebCore/bindings/v8/DOMWrapperWorld.cpp \
+	Source/WebCore/bindings/v8/DOMWrapperWorld.h \
+	Source/WebCore/bindings/v8/DateExtension.cpp \
+	Source/WebCore/bindings/v8/DateExtension.h \
+	Source/WebCore/bindings/v8/IDBBindingUtilities.cpp \
+	Source/WebCore/bindings/v8/IDBBindingUtilities.h \
+	Source/WebCore/bindings/v8/IntrusiveDOMWrapperMap.h \
+	Source/WebCore/bindings/v8/IsolatedWorld.cpp \
+	Source/WebCore/bindings/v8/IsolatedWorld.h \
+	Source/WebCore/bindings/v8/JavaScriptCallFrame.cpp \
+	Source/WebCore/bindings/v8/JavaScriptCallFrame.h \
+	Source/WebCore/bindings/v8/NPV8Object.cpp \
+	Source/WebCore/bindings/v8/NPV8Object.h \
+	Source/WebCore/bindings/v8/OptionsObject.cpp \
+	Source/WebCore/bindings/v8/OptionsObject.h \
+	Source/WebCore/bindings/v8/OwnHandle.h \
+	Source/WebCore/bindings/v8/PageScriptDebugServer.cpp \
+	Source/WebCore/bindings/v8/PageScriptDebugServer.h \
+	Source/WebCore/bindings/v8/RetainedDOMInfo.cpp \
+	Source/WebCore/bindings/v8/RetainedDOMInfo.h \
+	Source/WebCore/bindings/v8/RetainedObjectInfo.h \
+	Source/WebCore/bindings/v8/ScheduledAction.cpp \
+	Source/WebCore/bindings/v8/ScheduledAction.h \
+	Source/WebCore/bindings/v8/ScopedDOMDataStore.cpp \
+	Source/WebCore/bindings/v8/ScopedDOMDataStore.h \
+	Source/WebCore/bindings/v8/ScriptCachedFrameData.cpp \
+	Source/WebCore/bindings/v8/ScriptCachedFrameData.h \
+	Source/WebCore/bindings/v8/ScriptCallStackFactory.cpp \
+	Source/WebCore/bindings/v8/ScriptCallStackFactory.h \
+	Source/WebCore/bindings/v8/ScriptController.cpp \
+	Source/WebCore/bindings/v8/ScriptController.h \
+	Source/WebCore/bindings/v8/ScriptDebugServer.cpp \
+	Source/WebCore/bindings/v8/ScriptDebugServer.h \
+	Source/WebCore/bindings/v8/ScriptEventListener.cpp \
+	Source/WebCore/bindings/v8/ScriptEventListener.h \
+	Source/WebCore/bindings/v8/ScriptFunctionCall.cpp \
+	Source/WebCore/bindings/v8/ScriptFunctionCall.h \
+	Source/WebCore/bindings/v8/ScriptGCEvent.cpp \
+	Source/WebCore/bindings/v8/ScriptGCEvent.h \
+	Source/WebCore/bindings/v8/ScriptHeapSnapshot.cpp \
+	Source/WebCore/bindings/v8/ScriptHeapSnapshot.h \
+	Source/WebCore/bindings/v8/ScriptInstance.cpp \
+	Source/WebCore/bindings/v8/ScriptInstance.h \
+	Source/WebCore/bindings/v8/ScriptObject.cpp \
+	Source/WebCore/bindings/v8/ScriptObject.h \
+	Source/WebCore/bindings/v8/ScriptProfile.cpp \
+	Source/WebCore/bindings/v8/ScriptProfile.h \
+	Source/WebCore/bindings/v8/ScriptProfileNode.cpp \
+	Source/WebCore/bindings/v8/ScriptProfileNode.h \
+	Source/WebCore/bindings/v8/ScriptProfiler.cpp \
+	Source/WebCore/bindings/v8/ScriptProfiler.h \
+	Source/WebCore/bindings/v8/ScriptScope.cpp \
+	Source/WebCore/bindings/v8/ScriptScope.h \
+	Source/WebCore/bindings/v8/ScriptSourceCode.h \
+	Source/WebCore/bindings/v8/ScriptState.cpp \
+	Source/WebCore/bindings/v8/ScriptState.h \
+	Source/WebCore/bindings/v8/ScriptValue.cpp \
+	Source/WebCore/bindings/v8/ScriptValue.h \
+	Source/WebCore/bindings/v8/ScriptWrappable.h \
+	Source/WebCore/bindings/v8/SerializedScriptValue.cpp \
+	Source/WebCore/bindings/v8/SerializedScriptValue.h \
+	Source/WebCore/bindings/v8/SharedPersistent.h \
+	Source/WebCore/bindings/v8/StaticDOMDataStore.cpp \
+	Source/WebCore/bindings/v8/StaticDOMDataStore.h \
+	Source/WebCore/bindings/v8/V8AbstractEventListener.cpp \
+	Source/WebCore/bindings/v8/V8AbstractEventListener.h \
+	Source/WebCore/bindings/v8/V8Binding.cpp \
+	Source/WebCore/bindings/v8/V8Binding.h \
+	Source/WebCore/bindings/v8/V8Collection.cpp \
+	Source/WebCore/bindings/v8/V8Collection.h \
+	Source/WebCore/bindings/v8/V8DOMMap.cpp \
+	Source/WebCore/bindings/v8/V8DOMMap.h \
+	Source/WebCore/bindings/v8/V8DOMWindowShell.cpp \
+	Source/WebCore/bindings/v8/V8DOMWindowShell.h \
+	Source/WebCore/bindings/v8/V8DOMWrapper.cpp \
+	Source/WebCore/bindings/v8/V8DOMWrapper.h \
+	Source/WebCore/bindings/v8/V8EventListener.cpp \
+	Source/WebCore/bindings/v8/V8EventListener.h \
+	Source/WebCore/bindings/v8/V8EventListenerList.cpp \
+	Source/WebCore/bindings/v8/V8EventListenerList.h \
+	Source/WebCore/bindings/v8/V8GCController.cpp \
+	Source/WebCore/bindings/v8/V8GCController.h \
+	Source/WebCore/bindings/v8/V8GCForContextDispose.cpp \
+	Source/WebCore/bindings/v8/V8GCForContextDispose.h \
+	Source/WebCore/bindings/v8/V8Helpers.cpp \
+	Source/WebCore/bindings/v8/V8Helpers.h \
+	Source/WebCore/bindings/v8/V8HiddenPropertyName.cpp \
+	Source/WebCore/bindings/v8/V8HiddenPropertyName.h \
+	Source/WebCore/bindings/v8/V8IsolatedContext.cpp \
+	Source/WebCore/bindings/v8/V8IsolatedContext.h \
+	Source/WebCore/bindings/v8/V8LazyEventListener.cpp \
+	Source/WebCore/bindings/v8/V8LazyEventListener.h \
+	Source/WebCore/bindings/v8/V8NPObject.cpp \
+	Source/WebCore/bindings/v8/V8NPObject.h \
+	Source/WebCore/bindings/v8/V8NPUtils.cpp \
+	Source/WebCore/bindings/v8/V8NPUtils.h \
+	Source/WebCore/bindings/v8/V8NodeFilterCondition.cpp \
+	Source/WebCore/bindings/v8/V8NodeFilterCondition.h \
+	Source/WebCore/bindings/v8/V8Proxy.cpp \
+	Source/WebCore/bindings/v8/V8Proxy.h \
+	Source/WebCore/bindings/v8/V8Utilities.cpp \
+	Source/WebCore/bindings/v8/V8Utilities.h \
+	Source/WebCore/bindings/v8/V8WindowErrorHandler.cpp \
+	Source/WebCore/bindings/v8/V8WindowErrorHandler.h \
+	Source/WebCore/bindings/v8/V8WorkerContextErrorHandler.cpp \
+	Source/WebCore/bindings/v8/V8WorkerContextErrorHandler.h \
+	Source/WebCore/bindings/v8/V8WorkerContextEventListener.cpp \
+	Source/WebCore/bindings/v8/V8WorkerContextEventListener.h \
+	Source/WebCore/bindings/v8/WorkerContextExecutionProxy.cpp \
+	Source/WebCore/bindings/v8/WorkerContextExecutionProxy.h \
+	Source/WebCore/bindings/v8/WorkerScriptController.cpp \
+	Source/WebCore/bindings/v8/WorkerScriptController.h \
+	Source/WebCore/bindings/v8/WorkerScriptDebugServer.cpp \
+	Source/WebCore/bindings/v8/WorkerScriptDebugServer.h \
+	Source/WebCore/bindings/v8/WorldContextHandle.cpp \
+	Source/WebCore/bindings/v8/WorldContextHandle.h \
+	Source/WebCore/bindings/v8/WrapperTypeInfo.h \
+	Source/WebCore/bindings/v8/custom/V8ArrayBufferCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ArrayBufferViewCustom.h \
+	Source/WebCore/bindings/v8/custom/V8ArrayBufferViewCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8BindingMacros.h \
+	Source/WebCore/bindings/v8/custom/V8CSSRuleCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CSSStyleDeclarationCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CSSStyleSheetCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CSSValueCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CanvasPixelArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CanvasRenderingContext2DCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ClipboardCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ConsoleCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CoordinatesCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8CustomSQLStatementErrorCallback.cpp \
+	Source/WebCore/bindings/v8/custom/V8CustomVoidCallback.cpp \
+	Source/WebCore/bindings/v8/custom/V8CustomVoidCallback.h \
+	Source/WebCore/bindings/v8/custom/V8CustomXPathNSResolver.cpp \
+	Source/WebCore/bindings/v8/custom/V8CustomXPathNSResolver.h \
+	Source/WebCore/bindings/v8/custom/V8DOMFormDataCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DOMSettableTokenListCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DOMStringMapCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DOMTokenListCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DOMWindowCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DataViewCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DedicatedWorkerContextCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DeviceMotionEventCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DeviceOrientationEventCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DirectoryEntryCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DirectoryEntrySyncCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DocumentCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8DocumentLocationCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8EntryCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8EntrySyncCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8EventCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8FileReaderCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Float32ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Float64ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8GeolocationCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLAllCollectionCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLAudioElementConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLAudioElementConstructor.h \
+	Source/WebCore/bindings/v8/custom/V8HTMLCanvasElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLCollectionCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLDocumentCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLFormElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLFrameElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLFrameSetElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLImageElementConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLImageElementConstructor.h \
+	Source/WebCore/bindings/v8/custom/V8HTMLInputElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLLinkElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLOptionElementConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLOptionElementConstructor.h \
+	Source/WebCore/bindings/v8/custom/V8HTMLOptionsCollectionCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLOutputElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLPlugInElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLSelectElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8HTMLSelectElementCustom.h \
+	Source/WebCore/bindings/v8/custom/V8HistoryCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8IDBAnyCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8IDBKeyCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ImageDataCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8InjectedScriptHostCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8InjectedScriptManager.cpp \
+	Source/WebCore/bindings/v8/custom/V8InspectorFrontendHostCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Int16ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Int32ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Int8ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8JavaScriptCallFrameCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8LocationCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8MessageChannelConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8MessageEventCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8MessagePortCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8MessagePortCustom.h \
+	Source/WebCore/bindings/v8/custom/V8NamedNodeMapCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8NamedNodesCollection.cpp \
+	Source/WebCore/bindings/v8/custom/V8NamedNodesCollection.h \
+	Source/WebCore/bindings/v8/custom/V8NavigatorCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8NodeCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8NodeListCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8NotificationCenterCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8PerformanceCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8PeerConnectionCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8PopStateEventCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SQLResultSetRowListCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SQLTransactionCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SQLTransactionSyncCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SVGDocumentCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SVGElementCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SVGLengthCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SVGPathSegCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ScriptProfileCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8ScriptProfileNodeCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8SharedWorkerCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8StorageCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8StyleSheetCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8StyleSheetListCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Uint16ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Uint32ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8Uint8ArrayCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8WebGLRenderingContextCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8WebKitAnimationCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8WebKitPointConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8WebSocketCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8WorkerContextCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8WorkerCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8XMLHttpRequestConstructor.cpp \
+	Source/WebCore/bindings/v8/custom/V8XMLHttpRequestCustom.cpp \
+	Source/WebCore/bindings/v8/custom/V8XSLTProcessorCustom.cpp \
+	Source/WebCore/bindings/v8/npruntime.cpp \
+	Source/WebCore/bindings/v8/npruntime_priv.h \
+	Source/WebCore/bindings/v8/specialization/V8BindingState.cpp \
+	Source/WebCore/bindings/v8/specialization/V8BindingState.h \
+	Source/WebCore/platform/gtk/PlatformBridge.h \
+	Source/WebCore/platform/gtk/PlatformBridgeGtk.cpp \
+        Source/WebCore/bindings/v8/npruntime_impl.h
+endif # END USE_V8

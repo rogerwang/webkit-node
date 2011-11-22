@@ -22,6 +22,7 @@
 
 #include "AccessibilityObjectWrapperAtk.h"
 #include "AXObjectCache.h"
+#include "Document.h"
 #include "Frame.h"
 #include "RefPtr.h"
 

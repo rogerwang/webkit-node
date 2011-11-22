@@ -430,14 +430,6 @@ AC_ARG_ENABLE(progress_tag,
               [],[enable_progress_tag="yes"])
 AC_MSG_RESULT([$enable_progress_tag])
 
-# check whether to enable JavaScript debugger/profiler support
-AC_MSG_CHECKING([whether to enable JavaScript debugger/profiler support])
-AC_ARG_ENABLE(javascript_debugger,
-              AC_HELP_STRING([--enable-javascript-debugger],
-                             [enable JavaScript debugger/profiler support [default=yes]]),
-              [],[enable_javascript_debugger="yes"])
-AC_MSG_RESULT([$enable_javascript_debugger])
-
 # check whether to enable Gamepad support
 AC_MSG_CHECKING([whether to enable Gamepad support])
 AC_ARG_ENABLE(gamepad,
@@ -793,49 +785,88 @@ AC_ARG_ENABLE(debug_features,
               [],[if test "$enable_debug" = "yes"; then enable_debug_features="yes"; else enable_debug_features="no"; fi])
 AC_MSG_RESULT([$enable_debug_features])
 
-AC_MSG_CHECKING([whether to enable JIT compilation])
-AC_ARG_ENABLE([jit],
-              AC_HELP_STRING([--enable-jit],
-                             [Enable JIT compilation default=yes]),
-              [],[enable_jit="yes"])
-if test "$enable_jit" = "yes"; then
-    case "$host_cpu" in
-        arm*)
-            AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
-            AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
-            AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
-        ;;
-        i*86|x86_64)
-            AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
-            AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
-            AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
-            AC_DEFINE([ENABLE_JIT_OPTIMIZE_CALL], [1], [Define to enable optimizing calls])
-            AC_DEFINE([ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS], [1], [Define to enable optimized property access])
-            AC_DEFINE([ENABLE_JIT_OPTIMIZE_ARITHMETIC], [1], [Define to enable optimized arithmetic])
-            case "$host_cpu" in
-                i*86)
-                    AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_VA_LIST], [1], [Use stub va_list])
-                ;;
-                x86_64)
-                    AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
-                    AC_DEFINE([WTF_USE_ALTERNATE_JSIMMEDIATE], [1], [Use alternate JSImmediate])
-                ;;
-            esac
-        ;;
-        sh4)
-            AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
-            AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
-            AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
-            AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
-        ;;
-        *)
-            enable_jit="no (CPU '$host_cpu' not supported)"
-        ;;
-    esac
+# Determine JavaScript engine to use.
+AC_MSG_CHECKING([JavaScript engine])
+AC_ARG_WITH(jsengine,
+            AC_HELP_STRING([--with-jsengine=@<:@jsc/v8@:>@],
+                           [Select Javascript engine [default=jsc]]),
+            [],[with_jsengine="jsc"])
+
+case "$with_jsengine" in
+    jsc|v8);;
+    *) AC_MSG_ERROR([Invalid JS engine: Muist be jsc or v8]) ;;
+esac
+AC_MSG_RESULT([$with_jsengine])
+
+# check whether to enable JavaScript debugger/profiler support
+if test "$with_jsengine" = "jsc"; then
+AC_MSG_CHECKING([whether to enable JavaScript debugger/profiler support])
+AC_ARG_ENABLE(javascript_debugger,
+              AC_HELP_STRING([--enable-javascript-debugger],
+                             [enable JavaScript debugger/profiler support [default=yes]]),
+              [],[enable_javascript_debugger="yes"])
+AC_MSG_RESULT([$enable_javascript_debugger])
 else
-        AC_DEFINE([ENABLE_JIT], [0], [Define to enable JIT])
+    enable_javascript_debugger="no"
+fi
+
+
+if test "$with_jsengine" = "jsc"; then
+    AC_MSG_CHECKING([whether to enable JIT compilation])
+    AC_ARG_ENABLE([jit],
+                  AC_HELP_STRING([--enable-jit],
+                                 [Enable JIT compilation default=yes]),
+                  [],[enable_jit="yes"])
+    if test "$enable_jit" = "yes"; then
+        case "$host_cpu" in
+            arm*)
+                AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
+                AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
+                AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
+            ;;
+            i*86|x86_64)
+                AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
+                AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
+                AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
+                AC_DEFINE([ENABLE_JIT_OPTIMIZE_CALL], [1], [Define to enable optimizing calls])
+                AC_DEFINE([ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS], [1], [Define to enable optimized property access])
+                AC_DEFINE([ENABLE_JIT_OPTIMIZE_ARITHMETIC], [1], [Define to enable optimized arithmetic])
+                case "$host_cpu" in
+                    i*86)
+                        AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_VA_LIST], [1], [Use stub va_list])
+                    ;;
+                    x86_64)
+                        AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
+                        AC_DEFINE([WTF_USE_ALTERNATE_JSIMMEDIATE], [1], [Use alternate JSImmediate])
+                    ;;
+                esac
+            ;;
+            sh4)
+                AC_DEFINE([ENABLE_YARR], [1], [Define to enable YARR])
+                AC_DEFINE([ENABLE_YARR_JIT], [1], [Define to enable YARR JIT])
+                AC_DEFINE([ENABLE_JIT], [1], [Define to enable JIT])
+                AC_DEFINE([WTF_USE_JIT_STUB_ARGUMENT_REGISTER], [1], [Use stub register])
+            ;;
+            *)
+                enable_jit="no (CPU '$host_cpu' not supported)"
+            ;;
+        esac
+    else
+            AC_DEFINE([ENABLE_JIT], [0], [Define to enable JIT])
+    fi
+else
+    AC_DEFINE([ENABLE_JIT], [0], [Define to enable JIT])
+    enable_jit="no"
 fi
 AC_MSG_RESULT([$enable_jit])
+
+# Add V8 compiler flags and linker flags
+if test "$with_jsengine" = "v8"; then
+  V8_CPPFLAGS="-I\$(top_srcdir)/v8/include"
+  V8_LIBS="-L\$(top_srcdir)/v8/usr/lib -lv8"
+  AC_SUBST([V8_CPPFLAGS])
+  AC_SUBST([V8_LIBS])
+fi
 
 # Opcode stats
 AC_MSG_CHECKING([whether to enable opcode stats])
@@ -1063,6 +1094,7 @@ AC_ARG_ENABLE(webkit2,
     AC_HELP_STRING([--enable-webkit2], [build webkit2 [default=no]]),
     [], [enable_webkit2="no"])
 AC_MSG_RESULT([$enable_webkit2])
+enable_webkit2='no'
 if test "$enable_webkit2" = "yes"; then
    if test "$GTK_API_VERSION" = "2.0"; then
       AC_MSG_ERROR([WebKit2 requires GTK+ 3.x, use --with-gtk=3.0])
@@ -1102,6 +1134,10 @@ AM_CONDITIONAL([TARGET_X11], [test "$with_target" = "x11"])
 AM_CONDITIONAL([TARGET_WIN32], [test "$with_target" = "win32"])
 AM_CONDITIONAL([TARGET_QUARTZ], [test "$with_target" = "quartz"])
 AM_CONDITIONAL([TARGET_DIRECTFB], [test "$with_target" = "directfb"])
+
+# JS engine conditionals
+AM_CONDITIONAL([USE_JSC], [test "$with_jsengine" = "jsc"])
+AM_CONDITIONAL([USE_V8], [test "$with_jsengine" = "v8"])
 
 # Unicode backend conditionals
 AM_CONDITIONAL([USE_ICU_UNICODE], [test "$with_unicode_backend" = "icu"])
@@ -1226,6 +1262,7 @@ Build configuration:
  Unicode backend                                          : $with_unicode_backend
  Font backend                                             : $with_font_backend
  Optimized memory allocator                               : $enable_fast_malloc
+ JavaScript Engine                                        : $with_jsengine
 Features:
  3D Rendering                                             : $enable_3d_rendering
  WebGL                                                    : $enable_webgl

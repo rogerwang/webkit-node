@@ -29,6 +29,9 @@
  */
 
 #include "config.h"
+
+#if ENABLE(JAVASCRIPT_DEBUGGER)
+
 #include "V8ScriptProfile.h"
 
 #include "ScriptProfile.h"
@@ -59,3 +62,5 @@ v8::Handle<v8::Value> toV8(ScriptProfile* impl)
 }
 
 } // namespace WebCore
+
+#endif

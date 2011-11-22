@@ -307,7 +307,12 @@ void webkitInit()
     bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 
+#if USE(JSC)
     JSC::initializeThreading();
+#endif
+#if USE(V8)
+    WTF::initializeThreading();
+#endif
     WTF::initializeMainThread();
 
     WebCore::InitializeLoggingChannelsIfNecessary();

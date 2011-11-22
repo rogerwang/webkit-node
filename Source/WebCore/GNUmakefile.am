@@ -2,6 +2,7 @@ include $(srcdir)/Source/WebCore/GNUmakefile.list.am
 
 SVG_FEATURES :=
 HTML_FEATURES :=
+WRAPPER_FACTORY :=
 
 WEBCORE_CSS_PROPERTY_NAMES := $(WebCore)/css/CSSPropertyNames.in
 WEBCORE_CSS_VALUE_KEYWORDS := $(WebCore)/css/CSSValueKeywords.in
@@ -13,13 +14,25 @@ webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore \
 	-I$(srcdir)/Source/WebCore/accessibility \
 	-I$(srcdir)/Source/WebCore/bindings \
-	-I$(srcdir)/Source/WebCore/bindings/generic \
+	-I$(srcdir)/Source/WebCore/bindings/generic
+
+if USE_JSC
+webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore/bindings/js \
-	-I$(srcdir)/Source/WebCore/bindings/js/specialization \
+	-I$(srcdir)/Source/WebCore/bindings/js/specialization
+endif # END USE_JSC
+
+webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore/bridge \
-	-I$(srcdir)/Source/WebCore/bridge/c \
+	-I$(srcdir)/Source/WebCore/bridge/c
+
+if USE_JSC
+webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore/bridge/jni/jsc \
-	-I$(srcdir)/Source/WebCore/bridge/jsc \
+	-I$(srcdir)/Source/WebCore/bridge/jsc
+endif # END USE_JSC
+
+webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore/css \
 	-I$(srcdir)/Source/WebCore/dom \
 	-I$(srcdir)/Source/WebCore/dom/default \
@@ -84,12 +97,26 @@ webcore_cppflags += \
 	-I$(srcdir)/Source/WebCore/websockets \
 	-I$(srcdir)/Source/WebCore/workers \
 	-I$(srcdir)/Source/WebCore/xml \
-	-I$(srcdir)/Source/WebCore/xml/parser \
-	-I$(top_builddir)/WebCore/bindings/js \
+	-I$(srcdir)/Source/WebCore/xml/parser
+
+if USE_JSC
+webcore_cppflags += \
+	-I$(top_builddir)/WebCore/bindings/js
+endif # END USE_JSC
+
+webcore_cppflags += \
 	-I$(top_builddir)/DerivedSources/WebCore \
 	-I$(top_builddir)/DerivedSources \
 	-I$(top_builddir)/DerivedSources/JavaScriptCore \
 	-DDATA_DIR=\"${datadir}\"
+
+if USE_V8
+webcore_cppflags += \
+	-I$(srcdir)/Source/WebCore/bindings/v8 \
+	-I$(srcdir)/Source/WebCore/bindings/v8/specialization \
+	-I$(srcdir)/Source/WebCore/bindings/v8/custom \
+	$(V8_CPPFLAGS)
+endif # END USE_V8
 
 webcoregtk_cppflags += \
 	-DWEBKITGTK_API_VERSION_STRING=\"@WEBKITGTK_API_VERSION@\" \
@@ -165,12 +192,16 @@ endif # END ENABLE_PROGRESS_TAG
 # ----
 # JavaScript Debugger/Profiler
 # ----
+if USE_JSC
 if ENABLE_JAVASCRIPT_DEBUGGER
 FEATURE_DEFINES += ENABLE_JAVASCRIPT_DEBUGGER=1
 webcore_cppflags += -DENABLE_JAVASCRIPT_DEBUGGER=1
 else
 webcore_cppflags += -DENABLE_JAVASCRIPT_DEBUGGER=0
 endif # END ENABLE_JAVASCRIPT_DEBUGGER
+else
+webcore_cppflags += -DENABLE_JAVASCRIPT_DEBUGGER=0
+endif # END USE_JSC
 
 # ----
 # Gamepad support
@@ -458,6 +489,16 @@ webcore_cppflags += -DENABLE_GEOLOCATION=1
 endif # END ENABLE_GEOLOCATION
 
 # ----
+# JSC or V8
+# ----
+if USE_JSC
+WRAPPER_FACTORY += --wrapperFactory
+endif # END USE_JSC
+if USE_V8
+WRAPPER_FACTORY += --wrapperFactoryV8
+endif # END USE_V8
+
+# ----
 # MathML support
 # ----
 if ENABLE_MATHML
@@ -469,7 +510,7 @@ endif # END ENABLE_MATHML
 DerivedSources/WebCore/MathMLElementFactory.h: DerivedSources/WebCore/MathMLElementFactory.cpp
 DerivedSources/WebCore/MathMLNames.h: DerivedSources/WebCore/MathMLNames.cpp
 DerivedSources/WebCore/MathMLElementFactory.cpp DerivedSources/WebCore/MathMLNames.cpp: $(WebCore)/dom/make_names.pl $(WebCore)/mathml/mathtags.in $(WebCore)/mathml/mathattrs.in
-	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/mathml/mathtags.in --attrs $(WebCore)/mathml/mathattrs.in --factory --wrapperFactory --outputDir "$(GENSOURCES_WEBCORE)"
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/mathml/mathtags.in --attrs $(WebCore)/mathml/mathattrs.in --factory $(WRAPPER_FACTORY) --outputDir "$(GENSOURCES_WEBCORE)"
 
 # ----
 # Notifications support
@@ -505,10 +546,10 @@ DerivedSources/WebCore/JSSVGElementWrapperFactory.cpp: DerivedSources/WebCore/SV
 
 if SVG_FLAGS
 DerivedSources/WebCore/SVGElementFactory.cpp: $(WebCore)/dom/make_names.pl $(WebCore)/svg/svgtags.in $(WebCore)/svg/svgattrs.in
-	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/svg/svgtags.in --attrs $(WebCore)/svg/svgattrs.in --extraDefines "$(SVG_FEATURES)" --factory --wrapperFactory --outputDir "$(GENSOURCES_WEBCORE)"
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/svg/svgtags.in --attrs $(WebCore)/svg/svgattrs.in --extraDefines "$(SVG_FEATURES)" --factory $(WRAPPER_FACTORY) --outputDir "$(GENSOURCES_WEBCORE)"
 else
 DerivedSources/WebCore/SVGElementFactory.cpp: $(WebCore)/dom/make_names.pl $(WebCore)/svg/svgtags.in $(WebCore)/svg/svgattrs.in
-	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/svg/svgtags.in --attrs $(WebCore)/svg/svgattrs.in --factory --wrapperFactory --outputDir "$(GENSOURCES_WEBCORE)"
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/svg/svgtags.in --attrs $(WebCore)/svg/svgattrs.in --factory $(WRAPPER_FACTORY) --outputDir "$(GENSOURCES_WEBCORE)"
 endif # SVG_FLAGS
 
 # end SVG Features
@@ -620,6 +661,10 @@ DerivedSources/WebCore/XMLViewerCSS.h: $(WebCore)/xml/XMLViewer.css
 DerivedSources/WebCore/XMLViewerJS.h: $(WebCore)/xml/XMLViewer.js
 	$(PERL) $(WebCore)/inspector/xxd.pl XMLViewer_js $(WebCore)/xml/XMLViewer.js $(GENSOURCES_WEBCORE)/XMLViewerJS.h
 
+# V8 array buffer view
+DerivedSources/WebCore/V8ArrayBufferViewCustomScript.h: $(WebCore)/bindings/v8/custom/V8ArrayBufferViewCustomScript.js
+	$(PERL) $(WebCore)/inspector/xxd.pl V8ArrayBufferViewCustomScript_js $(WebCore)/bindings/v8/custom/V8ArrayBufferViewCustomScript.js $(GENSOURCES_WEBCORE)/V8ArrayBufferViewCustomScript.h
+
 # HTML entity names
 DerivedSources/WebCore/HTMLEntityTable.cpp: $(WebCore)/html/parser/HTMLEntityNames.in $(WebCore)/html/parser/create-html-entity-table
 	$(PYTHON) $(WebCore)/html/parser/create-html-entity-table -o $(GENSOURCES_WEBCORE)/HTMLEntityTable.cpp $(WebCore)/html/parser/HTMLEntityNames.in
@@ -677,16 +722,22 @@ DerivedSources/WebCore/WebKitFontFamilyNames.h: $(WebCore)/dom/make_names.pl $(W
 
 
 # HTML tag and attribute names
+if USE_JSC
 DerivedSources/WebCore/JSHTMLElementWrapperFactory.cpp: DerivedSources/WebCore/HTMLElementFactory.cpp
+endif # END USE_JSC
+if USE_V8
+DerivedSources/WebCore/V8SVGElementWrapperFactory.cpp: DerivedSources/WebCore/SVGElementFactory.cpp
+endif # END USE_V8
+
 DerivedSources/WebCore/HTMLElementFactory.cpp: DerivedSources/WebCore/HTMLElementFactory.h
 DerivedSources/WebCore/HTMLElementFactory.h: DerivedSources/WebCore/HTMLNames.cpp
 DerivedSources/WebCore/HTMLNames.cpp: DerivedSources/WebCore/HTMLNames.h
 if HTML_FLAGS
 DerivedSources/WebCore/HTMLNames.h: $(WebCore)/dom/make_names.pl $(WebCore)/html/HTMLTagNames.in $(WebCore)/html/HTMLAttributeNames.in
-	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/html/HTMLTagNames.in --attrs $(WebCore)/html/HTMLAttributeNames.in --extraDefines "$(HTML_FEATURES)" --factory --wrapperFactory --outputDir "$(GENSOURCES_WEBCORE)"
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/html/HTMLTagNames.in --attrs $(WebCore)/html/HTMLAttributeNames.in --extraDefines "$(HTML_FEATURES)" --factory $(WRAPPER_FACTORY) --outputDir "$(GENSOURCES_WEBCORE)"
 else
 DerivedSources/WebCore/HTMLNames.h: $(WebCore)/dom/make_names.pl $(WebCore)/html/HTMLTagNames.in $(WebCore)/html/HTMLAttributeNames.in
-	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/html/HTMLTagNames.in --attrs $(WebCore)/html/HTMLAttributeNames.in --factory --wrapperFactory --outputDir "$(GENSOURCES_WEBCORE)"
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --tags $(WebCore)/html/HTMLTagNames.in --attrs $(WebCore)/html/HTMLAttributeNames.in --factory $(WRAPPER_FACTORY) --outputDir "$(GENSOURCES_WEBCORE)"
 endif # HTML_FLAGS
 
 
@@ -695,6 +746,10 @@ DerivedSources/WebCore/XMLNSNames.cpp DerivedSources/WebCore/XMLNSNames.h: $(Web
 
 DerivedSources/WebCore/XMLNames.cpp DerivedSources/WebCore/XMLNames.h: $(WebCore)/dom/make_names.pl $(WebCore)/xml/xmlattrs.in
 	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $< --attrs $(WebCore)/xml/xmlattrs.in --outputDir "$(GENSOURCES_WEBCORE)"
+
+if USE_V8
+FEATURE_DEFINES += V8_BINDING=1
+endif
 
 # All Web Inspector generated files are created with this one call to CodeGeneratorInspector.pm
 DerivedSources/WebCore/InspectorProtocolVersion.h : $(WebCore)/inspector/Inspector.json $(WebCore)/inspector/generate-inspector-protocol-version
@@ -745,11 +800,21 @@ vpath %.idl $(IDL_PATH)
 
 # This does not appear to work correctly with gnumake unless
 # it includes an empty command list (the semicolon).
+if USE_JSC
 DerivedSources/WebCore/JS%.cpp: DerivedSources/WebCore/JS%.h;
 
 .SECONDARY:
 DerivedSources/WebCore/JS%.h: %.idl $(SCRIPTS_BINDINGS) $(WebCore)/bindings/scripts/CodeGeneratorJS.pm
 	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $(WebCore)/bindings/scripts/generate-bindings.pl $(IDL_PATH:%=--include "%") --outputDir "$(GENSOURCES_WEBCORE)" --defines "LANGUAGE_JAVASCRIPT=1 $(FEATURE_DEFINES)" --generator JS $<
+endif # END USE_JSC
+
+if USE_V8
+DerivedSources/WebCore/V8%.cpp: DerivedSources/WebCore/V8%.h;
+
+.SECONDARY:
+DerivedSources/WebCore/V8%.h: %.idl $(SCRIPTS_BINDINGS) $(WebCore)/bindings/scripts/CodeGeneratorV8.pm
+	$(AM_V_GEN)$(PERL) -I$(WebCore)/bindings/scripts $(WebCore)/bindings/scripts/generate-bindings.pl $(IDL_PATH:%=--include "%") --outputDir "$(GENSOURCES_WEBCORE)" --defines "LANGUAGE_JAVASCRIPT=1 $(FEATURE_DEFINES)" --generator V8 $<
+endif # END USE_V8
 
 noinst_LTLIBRARIES += \
 	libWebCore.la
@@ -863,7 +928,6 @@ EXTRA_DIST += \
 	Source/WebCore/bindings/scripts/generate-bindings.pl \
 	Source/WebCore/bindings/scripts/preprocessor.pm \
 	Source/WebCore/bindings/scripts/CodeGeneratorGObject.pm \
-	Source/WebCore/bindings/scripts/CodeGeneratorJS.pm \
 	Source/WebCore/bindings/scripts/CodeGenerator.pm \
 	Source/WebCore/bindings/scripts/generate-bindings.pl \
 	Source/WebCore/bindings/scripts/gobject-generate-headers.pl \
@@ -921,6 +985,16 @@ EXTRA_DIST += \
 	Source/WebCore/xml/XMLViewer.css \
 	Source/WebCore/xml/XMLViewer.js \
 	Source/WebCore/xml/XPathGrammar.y
+
+if USE_JSC
+EXTRA_DIST += \
+	Source/WebCore/bindings/scripts/CodeGeneratorJS.pm
+endif # END USE_JSC
+
+if USE_V8
+EXTRA_DIST += \
+	Source/WebCore/bindings/scripts/CodeGeneratorV8.pm
+endif # END USE_V8
 
 # Installing web inspector files
 webinspectordir = ${datadir}/webkitgtk-@WEBKITGTK_API_VERSION@/webinspector

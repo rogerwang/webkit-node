@@ -48,13 +48,9 @@
 #include "V8EventListenerList.h"
 #include "V8EventSource.h"
 #include "V8FileReader.h"
-#include "V8FileWriter.h"
 #include "V8HTMLCollection.h"
 #include "V8HTMLDocument.h"
 #include "V8HiddenPropertyName.h"
-#include "V8IDBDatabase.h"
-#include "V8IDBRequest.h"
-#include "V8IDBTransaction.h"
 #include "V8IsolatedContext.h"
 #include "V8LocalMediaStream.h"
 #include "V8Location.h"
@@ -70,7 +66,6 @@
 #include "V8SharedWorker.h"
 #include "V8SharedWorkerContext.h"
 #include "V8StyleSheet.h"
-#include "V8WebSocket.h"
 #include "V8Worker.h"
 #include "V8WorkerContext.h"
 #include "V8WorkerContextEventListener.h"
@@ -79,6 +74,16 @@
 #include "WebGLUniformLocation.h"
 #include "WorkerContextExecutionProxy.h"
 #include "WrapperTypeInfo.h"
+
+#if ENABLE(FILE_SYSTEM)
+#include "V8FileWriter.h"
+#endif
+
+#if ENABLE(INDEXED_DATABASE)
+#include "V8IDBDatabase.h"
+#include "V8IDBRequest.h"
+#include "V8IDBTransaction.h"
+#endif
 
 #if ENABLE(SVG)
 #include "SVGElementInstance.h"
@@ -89,6 +94,10 @@
 #if ENABLE(WEB_AUDIO)
 #include "V8AudioContext.h"
 #include "V8JavaScriptAudioNode.h"
+#endif
+
+#if ENABLE(WEB_SOCKETS)
+#include "V8WebSocket.h"
 #endif
 
 #include <algorithm>

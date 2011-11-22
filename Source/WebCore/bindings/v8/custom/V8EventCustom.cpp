@@ -45,7 +45,6 @@
 #include "V8DeviceOrientationEvent.h"
 #include "V8ErrorEvent.h"
 #include "V8HashChangeEvent.h"
-#include "V8IDBVersionChangeEvent.h"
 #include "V8KeyboardEvent.h"
 #include "V8MessageEvent.h"
 #include "V8MouseEvent.h"
@@ -55,7 +54,6 @@
 #include "V8PopStateEvent.h"
 #include "V8ProgressEvent.h"
 #include "V8Proxy.h"
-#include "V8SpeechInputEvent.h"
 #include "V8StorageEvent.h"
 #include "V8TextEvent.h"
 #include "V8TouchEvent.h"
@@ -64,6 +62,10 @@
 #include "V8WebKitTransitionEvent.h"
 #include "V8WheelEvent.h"
 #include "V8XMLHttpRequestProgressEvent.h"
+
+#if ENABLE(INDEXED_DATABASE)
+#include "V8IDBVersionChangeEvent.h"
+#endif
 
 #if ENABLE(SVG)
 #include "V8SVGZoomEvent.h"
@@ -76,6 +78,10 @@
 
 #if ENABLE(MEDIA_STREAM)
 #include "V8MediaStreamEvent.h"
+#endif
+
+#if ENABLE(INPUT_SPEECH)
+#include "V8SpeechInputEvent.h"
 #endif
 
 namespace WebCore {

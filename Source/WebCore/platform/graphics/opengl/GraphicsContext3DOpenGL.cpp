@@ -47,6 +47,8 @@
 #include "NotImplemented.h"
 #include "Uint8Array.h"
 #include <cstring>
+#include <wtf/OwnArrayPtr.h>
+#include <wtf/PassOwnArrayPtr.h>
 #include <wtf/UnusedParam.h>
 #include <wtf/text/CString.h>
 

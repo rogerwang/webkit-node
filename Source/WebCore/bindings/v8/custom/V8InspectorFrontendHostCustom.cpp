@@ -35,7 +35,7 @@
 #include "InspectorController.h"
 #include "InspectorFrontendClient.h"
 #include "InspectorFrontendHost.h"
-#if !PLATFORM(QT)
+#if !PLATFORM(QT) && !PLATFORM(GTK)
 #include "PlatformSupport.h"
 #endif
 #include "PlatformString.h"
@@ -117,7 +117,7 @@ v8::Handle<v8::Value> V8InspectorFrontendHost::showContextMenuCallback(const v8:
     return v8::Undefined();
 }
 
-#if !PLATFORM(QT)
+#if !PLATFORM(QT) && !PLATFORM(GTK)
 static v8::Handle<v8::Value> histogramEnumeration(const char* name, const v8::Arguments& args, int boundaryValue)
 {
     if (args.Length() < 1 || !args[0]->IsInt32())
@@ -133,7 +133,7 @@ static v8::Handle<v8::Value> histogramEnumeration(const char* name, const v8::Ar
 
 v8::Handle<v8::Value> V8InspectorFrontendHost::recordActionTakenCallback(const v8::Arguments& args)
 {
-#if !PLATFORM(QT)
+#if !PLATFORM(QT) && !PLATFORM(GTK)
     return histogramEnumeration("DevTools.ActionTaken", args, 100);
 #else
     return v8::Undefined();
@@ -142,7 +142,7 @@ v8::Handle<v8::Value> V8InspectorFrontendHost::recordActionTakenCallback(const v
 
 v8::Handle<v8::Value> V8InspectorFrontendHost::recordPanelShownCallback(const v8::Arguments& args)
 {
-#if !PLATFORM(QT)
+#if !PLATFORM(QT) && !PLATFORM(GTK)
     return histogramEnumeration("DevTools.PanelShown", args, 20);
 #else
     return v8::Undefined();
@@ -151,7 +151,7 @@ v8::Handle<v8::Value> V8InspectorFrontendHost::recordPanelShownCallback(const v8
 
 v8::Handle<v8::Value> V8InspectorFrontendHost::recordSettingChangedCallback(const v8::Arguments& args)
 {
-#if !PLATFORM(QT)
+#if !PLATFORM(QT) && !PLATFORM(GTK)
     return histogramEnumeration("DevTools.SettingChanged", args, 100);
 #else
     return v8::Undefined();

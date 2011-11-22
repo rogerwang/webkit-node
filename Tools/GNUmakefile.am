@@ -1,6 +1,10 @@
 noinst_PROGRAMS += \
-	Programs/DumpRenderTree \
 	Programs/GtkLauncher
+
+if USE_JSC
+noinst_PROGRAMS += \
+	Programs/DumpRenderTree
+endif # END USE_JSC
 
 if ENABLE_WEBKIT2
 noinst_PROGRAMS += \
@@ -27,6 +31,11 @@ gtklauncher_ldadd = \
 	$(GLIB_LIBS) \
 	$(LIBSOUP_LIBS) \
 	$(WINMM_LIBS)
+
+if USE_V8
+gtklauncher_ldadd += \
+	$(V8_LIBS)
+endif # END USE_V8
 
 gtklauncher_ldflags = \
 	-no-fast-install \
@@ -90,16 +99,23 @@ endif
 # to prefer the WebCore config.h over the DumpRenderTree config.h
 noinst_LTLIBRARIES += libWebCoreInternals.la
 libWebCoreInternals_la_SOURCES = \
+	Source/WebCore/testing/Internals.cpp \
+	Source/WebCore/testing/Internals.h
+
+if USE_JSC
+libWebCoreInternals_la_SOURCES += \
 	Source/WebCore/bindings/js/JSDOMWrapper.cpp \
 	Source/WebCore/bindings/js/JSDOMWrapper.h \
-	Source/WebCore/testing/Internals.cpp \
-	Source/WebCore/testing/Internals.h \
 	Source/WebCore/testing/js/WebCoreTestSupport.cpp \
 	Source/WebCore/testing/js/WebCoreTestSupport.h
+endif # END USE_JSC
 
+if USE_JSC
 libwebcoreinternals_built_sources += \
 	DerivedSources/WebCore/JSInternals.cpp \
 	DerivedSources/WebCore/JSInternals.h
+endif # END USE_JSC
+
 nodist_libWebCoreInternals_la_SOURCES = $(libwebcoreinternals_built_sources)
 BUILT_SOURCES += $(libwebcoreinternals_built_sources)
 
@@ -122,6 +138,7 @@ libWebCoreInternals_la_CFLAGS = \
 	$(javascriptcore_cflags)
 
 # DumpRenderTree
+if USE_JSC
 Programs_DumpRenderTree_CPPFLAGS = \
 	$(global_cppflags) \
 	-I$(srcdir)/Tools/DumpRenderTree \
@@ -213,6 +230,7 @@ Programs_DumpRenderTree_LDADD = \
 Programs_DumpRenderTree_LDFLAGS = \
 	-no-fast-install \
 	-no-install
+endif # END USE_JSC
 
 # clean target
 CLEANFILES += \

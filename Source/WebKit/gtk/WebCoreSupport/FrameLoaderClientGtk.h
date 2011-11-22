@@ -189,6 +189,12 @@ namespace WebKit {
 
         virtual PassRefPtr<WebCore::FrameNetworkingContext> createNetworkingContext();
 
+#if USE(V8)
+        virtual void didCreateScriptContext(v8::Handle<v8::Context>, int worldId);
+        virtual void willReleaseScriptContext(v8::Handle<v8::Context>, int worldId);
+        virtual bool allowScriptExtension(const String& extensionName, int extensionGroup);
+#endif
+
     private:
         WebKitWebFrame* m_frame;
         WebCore::ResourceResponse m_response;

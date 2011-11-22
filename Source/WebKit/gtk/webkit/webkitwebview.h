@@ -24,7 +24,10 @@
 
 #include <gtk/gtk.h>
 #include <libsoup/soup.h>
+
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 #include <JavaScriptCore/JSBase.h>
+#endif
 
 #include <webkit/webkitdefines.h>
 #include <webkit/webkitdom.h>
@@ -105,10 +108,12 @@ struct _WebKitWebViewClass {
     WebKitNavigationResponse   (* navigation_requested)   (WebKitWebView        *web_view,
                                                            WebKitWebFrame       *frame,
                                                            WebKitNetworkRequest *request);
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
     void                       (* window_object_cleared)  (WebKitWebView        *web_view,
                                                            WebKitWebFrame       *frame,
                                                            JSGlobalContextRef    context,
                                                            JSObjectRef           window_object);
+#endif
     gchar                    * (* choose_file)            (WebKitWebView        *web_view,
                                                            WebKitWebFrame       *frame,
                                                            const gchar          *old_file);

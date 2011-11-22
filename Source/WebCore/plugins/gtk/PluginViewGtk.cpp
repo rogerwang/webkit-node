@@ -29,7 +29,10 @@
 #include "config.h"
 #include "PluginView.h"
 
+#if USE(JSC)
 #include "BridgeJSC.h"
+#endif
+
 #include "Document.h"
 #include "DocumentLoader.h"
 #include "Element.h"
@@ -59,11 +62,14 @@
 #include "RenderLayer.h"
 #include "Settings.h"
 #include "SpatialNavigation.h"
+
+#if USE(JSC)
 #include "JSDOMBinding.h"
 #include "npruntime_impl.h"
 #include "runtime_root.h"
 #include <runtime/JSLock.h>
 #include <runtime/JSValue.h>
+#endif
 
 #ifdef GTK_API_VERSION_2
 #include <gdkconfig.h>
@@ -83,11 +89,13 @@
 #include <gdk/gdkwin32.h>
 #endif
 
+#if USE(JSC)
 using JSC::ExecState;
 using JSC::Interpreter;
 using JSC::JSLock;
 using JSC::JSObject;
 using JSC::UString;
+#endif
 
 using std::min;
 
@@ -104,7 +112,9 @@ bool PluginView::dispatchNPEvent(NPEvent& event)
         return false;
 
     PluginView::setCurrentPluginView(this);
+#if USE(JSC)
     JSC::JSLock::DropAllLocks dropAllLocks(JSC::SilenceAssertionsOnly);
+#endif
     setCallingPlugin(true);
 
     bool accepted = !m_plugin->pluginFuncs()->event(m_instance, &event);
@@ -272,7 +282,9 @@ void PluginView::paint(GraphicsContext* context, const IntRect& rect)
 
 void PluginView::handleKeyboardEvent(KeyboardEvent* event)
 {
+#if USE(JSC)
     JSC::JSLock::DropAllLocks dropAllLocks(JSC::SilenceAssertionsOnly);
+#endif
 
     if (!m_isStarted || m_status != PluginStatusLoadedSuccessfully)
         return;
@@ -402,7 +414,9 @@ static void setXCrossingEventSpecificFields(XEvent* xEvent, MouseEvent* event, c
 
 void PluginView::handleMouseEvent(MouseEvent* event)
 {
+#if USE(JSC)
     JSC::JSLock::DropAllLocks dropAllLocks(JSC::SilenceAssertionsOnly);
+#endif
 
     if (!m_isStarted || m_status != PluginStatusLoadedSuccessfully)
         return;
@@ -528,7 +542,9 @@ void PluginView::setNPWindowIfNeeded()
     }
 
     PluginView::setCurrentPluginView(this);
+#if USE(JSC)
     JSC::JSLock::DropAllLocks dropAllLocks(JSC::SilenceAssertionsOnly);
+#endif
     setCallingPlugin(true);
     m_plugin->pluginFuncs()->setwindow(m_instance, &m_npWindow);
     setCallingPlugin(false);
@@ -831,7 +847,9 @@ bool PluginView::platformStart()
 #if defined(XP_UNIX)
     if (m_plugin->pluginFuncs()->getvalue) {
         PluginView::setCurrentPluginView(this);
+#if USE(JSC)
         JSC::JSLock::DropAllLocks dropAllLocks(JSC::SilenceAssertionsOnly);
+#endif
         setCallingPlugin(true);
         m_plugin->pluginFuncs()->getvalue(m_instance, NPPVpluginNeedsXEmbed, &m_needsXEmbed);
         setCallingPlugin(false);

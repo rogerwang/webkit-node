@@ -34,6 +34,8 @@
 
 #include "V8WebGLRenderingContext.h"
 
+#include "WebGLExtension.h"
+
 #include "ExceptionCode.h"
 #include "NotImplemented.h"
 #include "V8ArrayBufferView.h"

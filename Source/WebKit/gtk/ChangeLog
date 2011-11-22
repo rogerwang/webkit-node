@@ -1,3 +1,48 @@
+2011-10-03  Rémi Duraffort  <remi.duraffort@st.com>
+
+        Port V8 to WebKit-GTK
+        https://bugs.webkit.org/show_bug.cgi?id=32452
+
+        This is first of the patches to support building of V8 with
+        WebKit GTK. With this patch configure option is provided to
+        choose to compile either enable or diable SFX.
+
+        This work is also copyrighted to Nayan Kumar Konaje <nayankk@motorola.com>
+
+        Reviewed by NOBODY (OOPS!).
+
+        * GNUmakefile.am:
+        * WebCoreSupport/DumpRenderTreeSupportGtk.cpp:
+        (DumpRenderTreeSupportGtk::gcCollectJavascriptObjects):
+        (DumpRenderTreeSupportGtk::gcCollectJavascriptObjectsOnAlternateThread):
+        (DumpRenderTreeSupportGtk::gcCountJavascriptObjects):
+        * WebCoreSupport/DumpRenderTreeSupportGtk.h:
+        * WebCoreSupport/FrameLoaderClientGtk.cpp:
+        (WebKit::FrameLoaderClient::dispatchDidClearWindowObjectInWorld):
+        (WebKit::FrameLoaderClient::didCreateScriptContext):
+        (WebKit::FrameLoaderClient::willReleaseScriptContext):
+        (WebKit::FrameLoaderClient::allowScriptExtension):
+        * WebCoreSupport/FrameLoaderClientGtk.h:
+        * tests/testatk.c:
+        (atkAttributeSetContainsAttributeName):
+        * tests/testcopyandpaste.c:
+        (test_pasting_markup):
+        * tests/testdomdomwindow.c:
+        (load_event_callback):
+        (test_dom_domview_signals):
+        (load_status_callback):
+        * tests/testkeyevents.c:
+        (test_ime_load_status_cb):
+        (verify_contents):
+        * webkit/webkitglobals.cpp:
+        (webkitInit):
+        * webkit/webkitviewportattributes.cpp:
+        * webkit/webkitwebframe.cpp:
+        * webkit/webkitwebframe.h:
+        * webkit/webkitwebview.cpp:
+        (webkit_web_view_class_init):
+        * webkit/webkitwebview.h:
+
 2011-09-28  Martin Robinson  <mrobinson@igalia.com>
 
         [GTK] Move drag-and-drop code which can be shared with WebKit2 to WebCore

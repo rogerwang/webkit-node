@@ -484,7 +484,9 @@ EOF
     my $txtGetProp = << "EOF";
 static void ${lowerCaseIfaceName}_get_property(GObject* object, guint prop_id, GValue* value, GParamSpec* pspec)
 {
+#if USE(JSC)
     WebCore::JSMainThreadNullState state;
+#endif // END USE_JSC
 EOF
     push(@txtGetProps, $txtGetProp);
     if (scalar @readableProperties > 0) {
@@ -505,7 +507,9 @@ EOF
     my $txtSetProps = << "EOF";
 static void ${lowerCaseIfaceName}_set_property(GObject* object, guint prop_id, const GValue* value, GParamSpec* pspec)
 {
+#if USE(JSC)
     WebCore::JSMainThreadNullState state;
+#endif // END USE(JSC)
 EOF
     push(@txtSetProps, $txtSetProps);
 
@@ -823,7 +827,9 @@ sub GenerateFunction {
         push(@cBody, "    g_return_if_fail(self);\n");
     }
 
+    push(@cBody, "#if USE(JSC)\n");
     push(@cBody, "    WebCore::JSMainThreadNullState state;\n");
+    push(@cBody, "#endif // END USE_JSC\n");
 
     # The WebKit::core implementations check for NULL already; no need to
     # duplicate effort.
@@ -1286,7 +1292,7 @@ sub Generate {
     $implIncludes{"webkit/$className.h"} = 1;
     $implIncludes{"webkit/${className}Private.h"} = 1;
     $implIncludes{"${interfaceName}.h"} = 1;
-    $implIncludes{"JSMainThreadExecState.h"} = 1;
+    $implIncludes{"WTFString.h"} = 1;
     $implIncludes{"ExceptionCode.h"} = 1;
 
     $hdrIncludes{"webkit/${parentClassName}.h"} = 1;
@@ -1352,6 +1358,10 @@ sub WriteData {
     print IMPL "#include <wtf/RefPtr.h>\n";
     print IMPL map { "#include \"$_\"\n" } sort keys(%implIncludes);
     print IMPL "\n" if keys(%implIncludes);
+    print IMPL "#if USE(JSC)\n";
+    print IMPL "#include \"JSMainThreadExecState.h\"\n";
+    print IMPL "#endif // END USE_JSC\n";
+    print IMPL "\n";
     print IMPL @cBody;
 
     print IMPL "\n";

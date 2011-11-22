@@ -38,6 +38,8 @@
 #include "ScriptExecutionContext.h"
 #include "SignalingCallback.h"
 
+#include <wtf/text/CString.h>
+
 namespace WebCore {
 
 PassRefPtr<PeerConnection> PeerConnection::create(MediaStreamFrameController* frameController, int id, const String& configuration, PassRefPtr<SignalingCallback> signalingCallback)

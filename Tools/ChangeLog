@@ -1,3 +1,18 @@
+2011-10-05  Rémi Duraffort  <remi.duraffort@st.com>
+
+        Port V8 to WebKit-GTK
+        https://bugs.webkit.org/show_bug.cgi?id=32452
+
+        This is first of the patches to support building of V8 with
+        WebKit GTK. With this patch configure option is provided to
+        choose to compile either enable or diable SFX.
+
+        This work is also copyrighted to Nayan Kumar Konaje <nayankk@motorola.com>
+
+        Reviewed by NOBODY (OOPS!).
+
+        * GNUmakefile.am:
+
 2011-10-05  David Levin  <levin@chromium.org>
 
         watchlist: Add more rules for chromium public api and sort the file.

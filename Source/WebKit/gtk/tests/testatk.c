@@ -931,7 +931,7 @@ static gboolean atkAttributeSetContainsAttributeName(AtkAttributeSet* set, const
 {
     AtkAttribute at;
     at.name = (gchar*)attributeName;
-    return g_slist_find_custom(set, &at, (GCompareFunc)compAtkAttributeName) ? true : false;
+    return g_slist_find_custom(set, &at, (GCompareFunc)compAtkAttributeName) ? TRUE : FALSE;
 }
 
 static gboolean atkAttributeSetAttributeHasValue(AtkAttributeSet* set, AtkTextAttribute attribute, const gchar* value)

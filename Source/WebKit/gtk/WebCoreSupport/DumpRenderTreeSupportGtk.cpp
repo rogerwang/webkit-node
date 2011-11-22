@@ -22,10 +22,10 @@
 #include "config.h"
 #include "DumpRenderTreeSupportGtk.h"
 
-#include "APICast.h"
 #include "AXObjectCache.h"
 #include "AccessibilityObjectWrapperAtk.h"
 #include "AnimationController.h"
+#include "DOMWindow.h"
 #include "DOMWrapperWorld.h"
 #include "Document.h"
 #include "EditorClientGtk.h"
@@ -34,16 +34,8 @@
 #include "FrameLoaderClientGtk.h"
 #include "FrameTree.h"
 #include "FrameView.h"
-#include "GCController.h"
 #include "GraphicsContext.h"
 #include "HTMLInputElement.h"
-#include "JSDOMWindow.h"
-#include "JSDocument.h"
-#include "JSElement.h"
-#include "JSLock.h"
-#include "JSNodeList.h"
-#include "JSRange.h"
-#include "JSValue.h"
 #include "NodeList.h"
 #include "PageGroup.h"
 #include "PlatformString.h"
@@ -61,14 +53,28 @@
 #include "webkitwebframeprivate.h"
 #include "webkitwebview.h"
 #include "webkitwebviewprivate.h"
+
+#if USE(JSC)
+#include "APICast.h"
+#include "GCController.h"
+#include "JSDOMWindow.h"
+#include "JSDocument.h"
+#include "JSElement.h"
+#include "JSLock.h"
+#include "JSNodeList.h"
+#include "JSRange.h"
+#include "JSValue.h"
 #include <JavaScriptCore/APICast.h>
+#endif // END USE_JSC
 
 #if ENABLE(SVG)
 #include "SVGDocumentExtensions.h"
 #include "SVGSMILElement.h"
 #endif
 
+#if USE(JSC)
 using namespace JSC;
+#endif // END USE_JSC
 using namespace WebCore;
 using namespace WebKit;
 
@@ -113,6 +119,7 @@ bool DumpRenderTreeSupportGtk::selectTrailingWhitespaceEnabled()
     return s_selectTrailingWhitespaceEnabled;
 }
 
+#if USE(JSC)
 JSValueRef DumpRenderTreeSupportGtk::nodesFromRect(JSContextRef context, JSValueRef value, int x, int y, unsigned top, unsigned right, unsigned bottom, unsigned left, bool ignoreClipping)
 {
     JSLock lock(SilenceAssertionsOnly);
@@ -142,6 +149,7 @@ WebKitDOMRange* DumpRenderTreeSupportGtk::jsValueToDOMRange(JSContextRef context
         return 0;
     return kit(range);
 }
+#endif
 
 /**
  * getFrameChildren:
@@ -405,6 +413,7 @@ bool DumpRenderTreeSupportGtk::pauseSVGAnimation(WebKitWebFrame* frame, const ch
 #endif
 }
 
+#if USE(JSC)
 CString DumpRenderTreeSupportGtk::markerTextForListItem(WebKitWebFrame* frame, JSContextRef context, JSValueRef nodeObject)
 {
     JSC::ExecState* exec = toJS(context);
@@ -414,6 +423,7 @@ CString DumpRenderTreeSupportGtk::markerTextForListItem(WebKitWebFrame* frame, J
 
     return WebCore::markerTextForListItem(element).utf8();
 }
+#endif
 
 unsigned int DumpRenderTreeSupportGtk::numberOfActiveAnimations(WebKitWebFrame* frame)
 {
@@ -675,18 +685,24 @@ void DumpRenderTreeSupportGtk::resetOriginAccessWhiteLists()
 
 void DumpRenderTreeSupportGtk::gcCollectJavascriptObjects()
 {
+#if USE(JSC)
     gcController().garbageCollectNow();
+#endif
 }
 
 void DumpRenderTreeSupportGtk::gcCollectJavascriptObjectsOnAlternateThread(bool waitUntilDone)
 {
+#if USE(JSC)
     gcController().garbageCollectOnAlternateThreadForDebugging(waitUntilDone);
+#endif
 }
 
 unsigned long DumpRenderTreeSupportGtk::gcCountJavascriptObjects()
 {
+#if USE(JSC)
     JSC::JSLock lock(JSC::SilenceAssertionsOnly);
     return JSDOMWindow::commonJSGlobalData()->heap.objectCount();
+#endif
 }
 
 void DumpRenderTreeSupportGtk::layoutFrame(WebKitWebFrame* frame)
@@ -776,6 +792,7 @@ void DumpRenderTreeSupportGtk::decrementAccessibilityValue(AtkObject* axObject)
     modifyAccessibilityValue(axObject, false);
 }
 
+#if USE(JSC)
 void DumpRenderTreeSupportGtk::setAutofilled(JSContextRef context, JSValueRef nodeObject, bool autofilled)
 {
     JSC::ExecState* exec = toJS(context);
@@ -804,6 +821,7 @@ void DumpRenderTreeSupportGtk::setValueForUser(JSContextRef context, JSValueRef 
     JSStringGetUTF8CString(value, valueBuffer.get(), bufferSize);
     inputElement->setValueForUser(String::fromUTF8(valueBuffer.get()));
 }
+#endif
 
 void DumpRenderTreeSupportGtk::rectangleForSelection(WebKitWebFrame* frame, cairo_rectangle_int_t* rectangle)
 {

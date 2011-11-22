@@ -26,7 +26,7 @@
 #include "config.h"
 #include "ScriptCachedFrameData.h"
 
-#if PLATFORM(QT)
+#if PLATFORM(QT) || PLATFORM(GTK)
 // FIXME: the right guard should be ENABLE(PAGE_CACHE). Replace with the right guard, once
 // https://bugs.webkit.org/show_bug.cgi?id=35061 is fixed.
 
@@ -76,4 +76,4 @@ void ScriptCachedFrameData::clear()
 
 } // namespace WebCore
 
-#endif // PLATFORM(QT)
+#endif // PLATFORM(QT) || PLATFORM(GTK)

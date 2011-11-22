@@ -690,6 +690,16 @@ XMLViewerJS.h : xml/XMLViewer.js
 
 # --------
 
+# V8 array buffer view
+
+
+all : V8ArrayBufferViewCustomScript.h
+
+V8ArrayBufferViewCustomScript.h: bindings/v8/custom/V8ArrayBufferViewCustomScript.js
+	perl $(WebCore)/inspector/xxd.pl V8ArrayBufferViewCustomScript_js $(WebCore)/bindings/v8/custom/V8ArrayBufferViewCustomScript.js V8ArrayBufferViewCustomScript.h
+
+# --------
+
 # HTML entity names
 
 HTMLEntityTable.cpp : html/parser/HTMLEntityNames.in $(WebCore)/html/parser/create-html-entity-table

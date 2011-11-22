@@ -49,8 +49,6 @@
 #include "HTMLFrameOwnerElement.h"
 #include "HTMLNames.h"
 #include "HTMLPlugInElement.h"
-#include "JSDOMBinding.h"
-#include "JSDOMWindow.h"
 #include "Language.h"
 #include "MIMETypeRegistry.h"
 #include "MouseEvent.h"
@@ -87,13 +85,18 @@
 #include "webkitwebsettingsprivate.h"
 #include "webkitwebview.h"
 #include "webkitwebviewprivate.h"
-#include <JavaScriptCore/APICast.h>
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <stdio.h>
 #include <wtf/text/CString.h>
 #include <wtf/text/StringConcatenate.h>
+
+#if USE(JSC)
+#include "JSDOMBinding.h"
+#include "JSDOMWindow.h"
+#include <JavaScriptCore/APICast.h>
+#endif // END USE_JSC
 
 using namespace WebCore;
 
@@ -637,12 +640,14 @@ void FrameLoaderClient::dispatchDidClearWindowObjectInWorld(DOMWrapperWorld* wor
 
     // TODO: Consider using g_signal_has_handler_pending() to avoid the overhead
     // when there are no handlers.
+#if USE(JSC)
     JSGlobalContextRef context = toGlobalRef(coreFrame->script()->globalObject(mainThreadNormalWorld())->globalExec());
     JSObjectRef windowObject = toRef(coreFrame->script()->globalObject(mainThreadNormalWorld()));
     ASSERT(windowObject);
 
     WebKitWebView* webView = getViewFromFrame(m_frame);
     g_signal_emit_by_name(webView, "window-object-cleared", m_frame, context, windowObject);
+#endif // USE_JSC
 
     // TODO: Re-attach debug clients if present.
     // The Win port has an example of how we might do this.
@@ -1298,5 +1303,19 @@ PassRefPtr<FrameNetworkingContext> FrameLoaderClient::createNetworkingContext()
 {
     return FrameNetworkingContextGtk::create(core(m_frame));
 }
+
+#if USE(V8)
+void FrameLoaderClient::didCreateScriptContext(v8::Handle<v8::Context>, int worldId)
+{
+}
+
+void FrameLoaderClient::willReleaseScriptContext(v8::Handle<v8::Context>, int worldId)
+{
+}
+
+bool FrameLoaderClient::allowScriptExtension(const String& extensionName, int extensionGroup)
+{
+}
+#endif // END USE_V8
 
 }

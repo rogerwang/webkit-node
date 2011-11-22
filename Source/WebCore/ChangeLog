@@ -1,3 +1,68 @@
+2011-10-05  Rémi Duraffort  <remi.duraffort@st.com>
+
+        Port V8 to WebKit-GTK
+        https://bugs.webkit.org/show_bug.cgi?id=32452
+
+        This is first of the patches to support building of V8 with
+        WebKit GTK. With this patch configure option is provided to
+        choose to compile either enable or diable SFX.
+
+        This work is also copyrighted to Nayan Kumar Konaje <nayankk@motorola.com>
+
+        Reviewed by NOBODY (OOPS!).
+
+        * DerivedSources.make:
+        * GNUmakefile.am:
+        * GNUmakefile.list.am:
+        * accessibility/gtk/AXObjectCacheAtk.cpp:
+        * accessibility/gtk/WebKitAccessibleHyperlink.cpp:
+        * bindings/scripts/CodeGeneratorGObject.pm:
+        ():
+        * bindings/v8/ScriptCachedFrameData.cpp:
+        * bindings/v8/ScriptCachedFrameData.h:
+        * bindings/v8/V8DOMWrapper.cpp:
+        * bindings/v8/V8GCController.cpp:
+        (WebCore::V8GCController::checkMemoryUsage):
+        * bindings/v8/V8Proxy.cpp:
+        * bindings/v8/custom/V8DirectoryEntryCustom.cpp:
+        * bindings/v8/custom/V8DirectoryEntrySyncCustom.cpp:
+        * bindings/v8/custom/V8EventCustom.cpp:
+        * bindings/v8/custom/V8HTMLAudioElementConstructor.cpp:
+        * bindings/v8/custom/V8HTMLAudioElementConstructor.h:
+        * bindings/v8/custom/V8InspectorFrontendHostCustom.cpp:
+        (WebCore::V8InspectorFrontendHost::recordActionTakenCallback):
+        (WebCore::V8InspectorFrontendHost::recordPanelShownCallback):
+        (WebCore::V8InspectorFrontendHost::recordSettingChangedCallback):
+        * bindings/v8/custom/V8ScriptProfileCustom.cpp:
+        * bindings/v8/custom/V8ScriptProfileNodeCustom.cpp:
+        * bindings/v8/custom/V8WebGLRenderingContextCustom.cpp:
+        * bindings/v8/custom/V8XSLTProcessorCustom.cpp:
+        * dom/CustomEvent.idl:
+        * dom/ErrorEvent.idl:
+        * dom/Event.idl:
+        * dom/HashChangeEvent.idl:
+        * dom/PageTransitionEvent.idl:
+        * dom/PopStateEvent.idl:
+        * dom/ProgressEvent.idl:
+        * dom/WebKitAnimationEvent.idl:
+        * editing/TextIterator.cpp:
+        * editing/gtk/FrameSelectionGtk.cpp:
+        * p2p/PeerConnection.cpp:
+        * p2p/SignalingCallback.h:
+        * platform/graphics/gstreamer/MediaPlayerPrivateGStreamer.cpp:
+        * platform/graphics/opengl/GraphicsContext3DOpenGL.cpp:
+        * plugins/gtk/PluginViewGtk.cpp:
+        (WebCore::PluginView::dispatchNPEvent):
+        (WebCore::PluginView::handleKeyboardEvent):
+        (WebCore::PluginView::handleMouseEvent):
+        (WebCore::PluginView::setNPWindowIfNeeded):
+        (WebCore::PluginView::platformStart):
+        * websockets/CloseEvent.idl:
+        * workers/WorkerMessagingProxy.cpp:
+        (WebCore::WorkerMessagingProxy::connectToInspector):
+        (WebCore::WorkerMessagingProxy::disconnectFromInspector):
+        (WebCore::WorkerMessagingProxy::sendMessageToInspector):
+
 2011-10-05  Pavel Feldman  <pfeldman@chromium.org>
 
         Web Inspector: add CSS model classes to the compilation.

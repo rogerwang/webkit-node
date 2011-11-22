@@ -19,7 +19,9 @@
 #ifndef DumpRenderTreeSupportGtk_h
 #define DumpRenderTreeSupportGtk_h
 
+#if USE(JSC)
 #include "JSStringRef.h"
+#endif
 #include <atk/atk.h>
 #include <glib.h>
 #include <webkit/webkitdefines.h>
@@ -54,12 +56,9 @@ public:
     static void setSelectTrailingWhitespaceEnabled(bool);
     static bool selectTrailingWhitespaceEnabled();
 
-    static JSValueRef nodesFromRect(JSContextRef context, JSValueRef value, int x, int y, unsigned top, unsigned right, unsigned bottom, unsigned left, bool ignoreClipping);
     static void dumpConfigurationForViewport(WebKitWebView* webView, gint deviceDPI, gint deviceWidth, gint deviceHeight, gint availableWidth, gint availableHeight);
 
     static void clearOpener(WebKitWebFrame*);
-
-    static WebKitDOMRange* jsValueToDOMRange(JSContextRef, JSValueRef);
 
     // FIXME: Move these to webkitwebframe.h once their API has been discussed.
     static GSList* getFrameChildren(WebKitWebFrame*);
@@ -76,7 +75,6 @@ public:
     static bool pauseAnimation(WebKitWebFrame*, const char* name, double time, const char* element);
     static bool pauseTransition(WebKitWebFrame*, const char* name, double time, const char* element);
     static bool pauseSVGAnimation(WebKitWebFrame*, const char* animationId, double time, const char* elementId);
-    static WTF::CString markerTextForListItem(WebKitWebFrame*, JSContextRef, JSValueRef nodeObject);
     static unsigned int numberOfActiveAnimations(WebKitWebFrame*);
     static void suspendAnimations(WebKitWebFrame*);
     static void resumeAnimations(WebKitWebFrame*);
@@ -84,9 +82,15 @@ public:
     static AtkObject* getFocusedAccessibleElement(WebKitWebFrame*);
     static AtkObject* getRootAccessibleElement(WebKitWebFrame*);
     static void layoutFrame(WebKitWebFrame*);
+    static bool shouldClose(WebKitWebFrame*);
+
+#if USE(JSC)
+    static JSValueRef nodesFromRect(JSContextRef, JSValueRef, int x, int y, unsigned top, unsigned right, unsigned bottom, unsigned left, bool ignoreClipping);
+    static WebKitDOMRange* jsValueToDOMRange(JSContextRef, JSValueRef);
+    static WTF::CString markerTextForListItem(WebKitWebFrame*, JSContextRef, JSValueRef nodeObject);
     static void setAutofilled(JSContextRef, JSValueRef, bool);
     static void setValueForUser(JSContextRef, JSValueRef, JSStringRef);
-    static bool shouldClose(WebKitWebFrame*);
+#endif
 
     // WebKitWebView
     static void executeCoreCommandByName(WebKitWebView*, const gchar* name, const gchar* value);

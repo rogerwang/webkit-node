@@ -22,8 +22,11 @@
 #include <string.h>
 #include <glib/gstdio.h>
 #include <webkit/webkit.h>
+
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 #include <JavaScriptCore/JSStringRef.h>
 #include <JavaScriptCore/JSContextRef.h>
+#endif
 
 #if GTK_CHECK_VERSION(2, 14, 0)
 
@@ -134,7 +137,9 @@ static void test_copy_and_paste(CopyAndPasteFixture* fixture, gconstpointer data
     g_main_loop_run(fixture->loop);
 }
 
+
 static CopyAndPasteFixture* currentFixture;
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 static JSValueRef runPasteTestCallback(JSContextRef context, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception)
 {
     // Simulate a paste keyboard sequence.
@@ -176,7 +181,9 @@ static JSValueRef runPasteTestCallback(JSContextRef context, JSObjectRef functio
     g_main_loop_quit(currentFixture->loop);
     return JSValueMakeUndefined(context);
 }
+#endif
 
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 static void window_object_cleared_callback(WebKitWebView* web_view, WebKitWebFrame* web_frame, JSGlobalContextRef context, JSObjectRef window_object, gpointer data)
 {
     JSStringRef name = JSStringCreateWithUTF8CString("runTest");
@@ -184,6 +191,7 @@ static void window_object_cleared_callback(WebKitWebView* web_view, WebKitWebFra
     JSObjectSetProperty(context, window_object, name, testComplete, kJSPropertyAttributeNone, 0);
     JSStringRelease(name);
 }
+#endif
 
 static void pasting_test_get_data_callback(GtkClipboard* clipboard, GtkSelectionData* selection_data, guint info, gpointer data)
 {
@@ -197,6 +205,7 @@ static void pasting_test_clear_data_callback(GtkClipboard* clipboard, gpointer d
 
 static void test_pasting_markup(CopyAndPasteFixture* fixture, gconstpointer data)
 {
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
     fixture->info = (TestInfo*)data;
     currentFixture = fixture;
 
@@ -223,6 +232,7 @@ static void test_pasting_markup(CopyAndPasteFixture* fixture, gconstpointer data
     gtk_window_present(GTK_WINDOW(fixture->window));
 
     g_main_loop_run(fixture->loop);
+#endif
 }
 
 

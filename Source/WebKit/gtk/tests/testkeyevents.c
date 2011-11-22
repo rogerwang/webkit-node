@@ -22,8 +22,11 @@
 #include <string.h>
 #include <glib/gstdio.h>
 #include <webkit/webkit.h>
+
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 #include <JavaScriptCore/JSStringRef.h>
 #include <JavaScriptCore/JSContextRef.h>
+#endif
 
 
 #if GTK_CHECK_VERSION(2, 14, 0)
@@ -146,6 +149,7 @@ static void test_keypress_events(KeyEventFixture* fixture, gconstpointer data)
     setup_keyevent_test(fixture, data, G_CALLBACK(test_keypress_events_load_status_cb));
 }
 
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
 static gboolean element_text_equal_to(JSContextRef context, const gchar* text)
 {
     JSStringRef scriptString = JSStringCreateWithUTF8CString(
@@ -175,9 +179,11 @@ static gboolean element_text_equal_to(JSContextRef context, const gchar* text)
     g_free(cString);
     return result;
 }
+#endif
 
 static void test_ime_load_status_cb(WebKitWebView* webView, GParamSpec* spec, gpointer data)
 {
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
     KeyEventFixture* fixture = (KeyEventFixture*)data;
     WebKitLoadStatus status = webkit_web_view_get_load_status(webView);
     if (status != WEBKIT_LOAD_FINISHED)
@@ -204,6 +210,7 @@ static void test_ime_load_status_cb(WebKitWebView* webView, GParamSpec* spec, gp
 
     g_object_unref(imContext);
     g_main_loop_quit(fixture->loop);
+#endif
 }
 
 static void test_ime(KeyEventFixture* fixture, gconstpointer data)
@@ -213,6 +220,7 @@ static void test_ime(KeyEventFixture* fixture, gconstpointer data)
 
 static gboolean verify_contents(gpointer data)
 {
+#if defined(WTF_USE_JSC) && WTF_USE_JSC == 1
     KeyEventFixture* fixture = (KeyEventFixture*)data;
     JSGlobalContextRef context = webkit_web_frame_get_global_context(
         webkit_web_view_get_main_frame(fixture->webView));
@@ -221,6 +229,7 @@ static gboolean verify_contents(gpointer data)
     g_assert(element_text_equal_to(context, fixture->info->text));
     g_main_loop_quit(fixture->loop);
     return FALSE;
+#endif
 }
 
 static void test_blocking_load_status_cb(WebKitWebView* webView, GParamSpec* spec, gpointer data)
