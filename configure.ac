@@ -866,7 +866,7 @@ AC_MSG_RESULT([$enable_jit])
 # Add V8 compiler flags and linker flags
 if test "$with_jsengine" = "v8"; then
   if test "$enable_debug_symbols" = "yes"; then
-    V8_LIBS="-lv8_g"
+    V8_LIBS="-lv8"
   else
     V8_LIBS="-lv8"
   fi
