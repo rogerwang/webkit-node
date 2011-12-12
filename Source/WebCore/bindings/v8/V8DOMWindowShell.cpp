@@ -577,6 +577,10 @@ void V8DOMWindowShell::setSecurityToken()
       return;
     }
 
+#if USE(NODEJS)
+    if (token == "file://")
+      return;
+#endif
     CString utf8Token = token.utf8();
     // NOTE: V8 does identity comparison in fast path, must use a symbol
     // as the security token.
