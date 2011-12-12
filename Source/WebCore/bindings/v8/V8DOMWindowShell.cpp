@@ -362,12 +362,25 @@ bool V8DOMWindowShell::initContextIfNeeded()
         v8::Local<v8::Object> winGlobal = v8Context->Global();
         v8::Local<v8::Value> value;
 
+	v8::Local<v8::Value> val_nwebkit = nodeGlobal->Get(v8::String::New("__nwebkit"));
+	ASSERT(val_nwebkit->IsObject());
+	v8::Local<v8::Object> nwebkit = v8::Local<v8::Object>::Cast (val_nwebkit);
+
         for (int i = 0; i < sizeof(migrateNames) / sizeof(char*); i++) {
-            value = nodeContext->Global()->Get(v8::String::New(migrateNames[i]));
+            value = nwebkit->Get(v8::String::New(migrateNames[i]));
             if (!value->IsUndefined())
                 winGlobal->Set(v8::String::New(migrateNames[i]), value);
         }
-        nodeGlobal->Set (v8::String::New("window"), winGlobal);
+        nwebkit->Set (v8::String::New("window"), winGlobal);
+
+	v8::Local<v8::Value> val_contextWrapper = nwebkit->Get(v8::String::New("context"));
+	ASSERT(val_contextWrapper->IsObject());
+	v8::Local<v8::Object> contextWrapper = val_contextWrapper->ToObject();
+
+	contextWrapper->SetPointerInInternalField (1, *m_context);
+	v8::Local<v8::Function> callback =
+	  v8::Local<v8::Function>::Cast(contextWrapper->Get(v8::String::New("onContextCreationFromWebKit")));
+	callback->Call (contextWrapper, 0, NULL);
     }
 
 #endif
