@@ -75,6 +75,11 @@
                 '<(chromium_src_dir)/third_party/angle/src/build_angle.gyp:translator_glsl',
                 '<(chromium_src_dir)/v8/tools/gyp/v8.gyp:v8',
             ],
+            'direct_dependent_settings': {
+                'defines': [
+                    'WEBKIT_DLL',
+                ],
+            },
             'export_dependent_settings': [
                 '<(chromium_src_dir)/skia/skia.gyp:skia',
                 '<(chromium_src_dir)/third_party/icu/icu.gyp:icuuc',
@@ -89,6 +94,7 @@
             ],
             'defines': [
                 'WEBKIT_IMPLEMENTATION=1',
+                'WEBKIT_DLL',
             ],
             'sources': [
                 'bridge/DeprecatedPeerConnectionHandler.cpp',
