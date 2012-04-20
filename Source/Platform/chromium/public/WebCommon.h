@@ -79,6 +79,16 @@
     #define WEBKIT_EXPORT
 #endif
 
+#if defined(WIN32)
+#if WEBKIT_IMPLEMENTATION
+#define WEBKIT_EXPORTED __declspec(dllexport)
+#else
+#define WEBKIT_EXPORTED __declspec(dllimport)
+#endif
+#else
+#define WEBKIT_EXPORTED __attribute__((visibility("default")))
+#endif
+
 // -----------------------------------------------------------------------------
 // Basic types
 

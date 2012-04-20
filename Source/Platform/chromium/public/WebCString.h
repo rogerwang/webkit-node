@@ -75,19 +75,19 @@ public:
     // Returns 0 if both strings are equals, a value greater than zero if the
     // first character that does not match has a greater value in this string
     // than in |other|, or a value less than zero to indicate the opposite.
-    WEBKIT_EXPORT int compare(const WebCString& other) const;
+    WEBKIT_EXPORTED int compare(const WebCString& other) const;
 
-    WEBKIT_EXPORT void reset();
-    WEBKIT_EXPORT void assign(const WebCString&);
-    WEBKIT_EXPORT void assign(const char* data, size_t len);
+    WEBKIT_EXPORTED void reset();
+    WEBKIT_EXPORTED void assign(const WebCString&);
+    WEBKIT_EXPORTED void assign(const char* data, size_t len);
 
-    WEBKIT_EXPORT size_t length() const;
-    WEBKIT_EXPORT const char* data() const;
+    WEBKIT_EXPORTED size_t length() const;
+    WEBKIT_EXPORTED const char* data() const;
 
     bool isEmpty() const { return !length(); }
     bool isNull() const { return !m_private; }
 
-    WEBKIT_EXPORT WebString utf16() const;
+    WEBKIT_EXPORTED WebString utf16() const;
 
 #if WEBKIT_IMPLEMENTATION
     WebCString(const WTF::CString&);
