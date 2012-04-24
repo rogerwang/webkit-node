@@ -77,7 +77,7 @@
             ],
             'direct_dependent_settings': {
                 'defines': [
-                    'WEBKIT_DLL',
+#                    'WEBKIT_DLL',
                 ],
             },
             'export_dependent_settings': [
@@ -94,7 +94,7 @@
             ],
             'defines': [
                 'WEBKIT_IMPLEMENTATION=1',
-                'WEBKIT_DLL',
+#                'WEBKIT_DLL',
             ],
             'sources': [
                 'bridge/DeprecatedPeerConnectionHandler.cpp',
